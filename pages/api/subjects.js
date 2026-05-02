@@ -46,4 +46,10 @@ export default async function handler(req, res) {
     console.error('Subjects API error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
-}
+} 
+
+export const config = {
+  api: {
+    bodyParser: true,
+  },
+};

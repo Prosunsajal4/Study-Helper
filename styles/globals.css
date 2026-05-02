@@ -206,10 +206,11 @@ body {
   color: #e6f2ff;
   padding: 16px;
   border-radius: 8px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Courier New", monospace;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, "Courier New", monospace;
   white-space: pre-wrap;
   overflow-x: auto;
-  border: 1px solid rgba(255,255,255,0.04);
+  border: 1px solid rgba(255, 255, 255, 0.04);
   margin-top: 8px;
 }
 
@@ -220,7 +221,6 @@ body {
 .question-answer {
   margin-top: 8px;
 }
-
 
 .form-label {
   display: block;

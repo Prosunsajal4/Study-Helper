@@ -1,11 +1,12 @@
-import React from 'react';
+import React from "react";
 
 export default function AnswerRenderer({ answer }) {
   if (!answer) return null;
 
   // Heuristic to detect math-like answers: LaTeX delimiters, common LaTeX commands,
   // or presence of numeric expressions with operators.
-  const mathRegex = /\$.*\$|\\\(|\\\[|\\frac|\\\\frac|[0-9]+\s*[=+\-×\*\/^]\s*[0-9]+/s;
+  const mathRegex =
+    /\$.*\$|\\\(|\\\[|\\frac|\\\\frac|[0-9]+\s*[=+\-×\*\/^]\s*[0-9]+/s;
   const isMath = mathRegex.test(answer);
 
   if (isMath) {

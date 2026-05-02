@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import AnswerRenderer from '../../components/AnswerRenderer';
+import AnswerRenderer from "../components/AnswerRenderer";
 
 export default function QuestionsBrowser() {
   const router = useRouter();

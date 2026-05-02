@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import AnswerRenderer from '../../../components/AnswerRenderer';
+import AnswerRenderer from "../../components/AnswerRenderer";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";

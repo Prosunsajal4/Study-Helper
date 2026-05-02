@@ -1,0 +1,32 @@
+const { connectDB } = require("../../lib/db");
+
+export default async function handler(req, res) {
+  if (req.method !== "GET") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  try {
+    const db = await connectDB();
+    const { subjectId, documentId } = req.query;
+    const ObjectId = require("mongodb").ObjectId;
+
+    let query = {};
+    if (subjectId) {
+      query.subjectId = new ObjectId(subjectId);
+    }
+    if (documentId) {
+      query.documentId = new ObjectId(documentId);
+    }
+
+    const highlights = await db
+      .collection("highlights")
+      .find(query)
+      .sort({ generatedAt: -1 })
+      .toArray();
+
+    res.status(200).json(highlights);
+  } catch (error) {
+    console.error("Highlights API error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}

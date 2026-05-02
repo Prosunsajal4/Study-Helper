@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import AnswerRenderer from '../../../components/AnswerRenderer';
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -532,7 +533,9 @@ export default function DocumentDetail() {
                       <div className="question-text">
                         Q{qIdx + 1}. {q.question}
                       </div>
-                      <div className="question-answer">Answer: {q.answer}</div>
+                      <div className="question-answer">
+                        <AnswerRenderer answer={q.answer} />
+                      </div>
                       <div className="question-meta">
                         <span>Marks: {q.marks}</span>
                         <span>Type: {q.type}</span>

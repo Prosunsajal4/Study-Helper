@@ -200,6 +200,28 @@ body {
   margin-bottom: 24px;
 }
 
+/* Answer renderer styles */
+.answer-renderer.math-answer {
+  background: #0b1220;
+  color: #e6f2ff;
+  padding: 16px;
+  border-radius: 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Courier New", monospace;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  border: 1px solid rgba(255,255,255,0.04);
+  margin-top: 8px;
+}
+
+.answer-renderer.theory-answer p {
+  margin-bottom: 0.75rem;
+}
+
+.question-answer {
+  margin-top: 8px;
+}
+
+
 .form-label {
   display: block;
   margin-bottom: 8px;

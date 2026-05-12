@@ -391,16 +391,16 @@ export default function Upload() {
                   <button
                     className="btn btn-secondary"
                     onClick={() => setStep(2)}
-                    disabled={uploading}
+                    disabled={loading}
                   >
                     ← Back
                   </button>
                   <button
                     className="btn btn-primary"
                     onClick={handleUpload}
-                    disabled={!uploadData.file || uploading}
+                    disabled={!uploadData.file || loading}
                   >
-                    {uploading ? (
+                    {loading ? (
                       <>
                         <div
                           className="spinner"

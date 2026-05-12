@@ -50,8 +50,9 @@ export default async function handler(req, res) {
   try {
     // Check authentication
     const userId = req.headers["x-user-id"];
+    console.log("Upload request - userId:", userId);
     if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
+      return res.status(401).json({ error: "Unauthorized - No userId header" });
     }
 
     await runMiddleware(req, res, upload.single("file"));
@@ -61,6 +62,7 @@ export default async function handler(req, res) {
     }
 
     const { subjectId, docType } = req.body;
+    console.log("Upload request - subjectId:", subjectId, "docType:", docType);
 
     if (!subjectId || !docType) {
       fs.unlinkSync(req.file.path);
@@ -79,12 +81,16 @@ export default async function handler(req, res) {
     const ObjectId = require("mongodb").ObjectId;
 
     // Verify subject exists and belongs to user
+    console.log("Looking for subject with _id:", subjectId, "userId:", userId);
     const subject = await db
       .collection("subjects")
       .findOne({ _id: new ObjectId(subjectId), userId: new ObjectId(userId) });
+    console.log("Found subject:", subject);
     if (!subject) {
       fs.unlinkSync(req.file.path);
-      return res.status(404).json({ error: "Subject not found" });
+      return res
+        .status(404)
+        .json({ error: "Subject not found or does not belong to you" });
     }
 
     // Parse file

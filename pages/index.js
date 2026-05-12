@@ -113,98 +113,81 @@ export default function Dashboard() {
         />
       </Head>
 
-      <div className="app-layout">
-        <aside className="sidebar">
-          <h2 style={{ marginBottom: "30px", fontSize: "1.5rem" }}>
+      <div className="flex min-h-screen">
+        <aside className="w-70 bg-gradient-to-b from-primary to-primary-dark text-white p-6 fixed h-screen overflow-y-auto shadow-lg">
+          <h2 className="text-xl font-bold mb-8 flex items-center gap-3">
             📚 Study Assistant
           </h2>
           <nav>
-            <Link href="/" className="nav-item">
-              <span>🏠</span> Dashboard
+            <Link href="/" className="flex items-center py-3 px-4 text-white/80 no-underline rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer">
+              <span className="mr-3">🏠</span> Dashboard
             </Link>
-            <Link href="/upload" className="nav-item">
-              <span>📤</span> Upload
+            <Link href="/upload" className="flex items-center py-3 px-4 text-white/80 no-underline rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer">
+              <span className="mr-3">📤</span> Upload
             </Link>
-            <Link href="/documents" className="nav-item">
-              <span>📄</span> Documents
+            <Link href="/documents" className="flex items-center py-3 px-4 text-white/80 no-underline rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer">
+              <span className="mr-3">📄</span> Documents
             </Link>
-            <Link href="/questions" className="nav-item">
-              <span>❓</span> Questions
+            <Link href="/questions" className="flex items-center py-3 px-4 text-white/80 no-underline rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer">
+              <span className="mr-3">❓</span> Questions
             </Link>
-            <Link href="/highlights" className="nav-item">
-              <span>✨</span> Highlights
+            <Link href="/highlights" className="flex items-center py-3 px-4 text-white/80 no-underline rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer">
+              <span className="mr-3">✨</span> Highlights
             </Link>
             <button
               onClick={() => {
                 localStorage.clear();
                 router.push("/login");
               }}
-              className="nav-item"
-              style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                width: "100%",
-                textAlign: "left",
-                padding: "12px 16px",
-                color: "var(--text-light)",
-                marginTop: "20px",
-              }}
+              className="flex items-center py-3 px-4 text-white/80 rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer w-full text-left bg-none border-none"
             >
-              <span>🚪</span> Logout
+              <span className="mr-3">🚪</span> Logout
             </button>
           </nav>
         </aside>
 
-        <main className="main-content">
-          <div className="prompt-banner">
-            <span className="prompt-banner-icon">💡</span>
+        <main className="ml-70 flex-1 p-10 max-w-7xl">
+          <div className="bg-warning-light border border-warning text-warning-dark px-4 py-3 rounded-lg mb-8 flex items-center gap-3">
+            <span className="text-2xl">💡</span>
             <span>
               Upload your question pattern PDF or textbook to improve question
               quality
             </span>
           </div>
 
-          <div className="stats-grid">
-            <div className="stat-card">
-              <div className="stat-value">{stats.documents}</div>
-              <div className="stat-label">Documents Uploaded</div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-surface p-6 rounded-lg shadow-md border border-border">
+              <div className="text-3xl font-bold text-primary mb-2">{stats.documents}</div>
+              <div className="text-text-light">Documents Uploaded</div>
             </div>
-            <div className="stat-card">
-              <div className="stat-value">{stats.highlights}</div>
-              <div className="stat-label">Highlights Generated</div>
+            <div className="bg-surface p-6 rounded-lg shadow-md border border-border">
+              <div className="text-3xl font-bold text-primary mb-2">{stats.highlights}</div>
+              <div className="text-text-light">Highlights Generated</div>
             </div>
-            <div className="stat-card">
-              <div className="stat-value">{stats.questions}</div>
-              <div className="stat-label">Questions Generated</div>
+            <div className="bg-surface p-6 rounded-lg shadow-md border border-border">
+              <div className="text-3xl font-bold text-primary mb-2">{stats.questions}</div>
+              <div className="text-text-light">Questions Generated</div>
             </div>
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "20px",
-            }}
-          >
-            <h1 style={{ fontSize: "1.75rem", color: "var(--primary)" }}>
+          <div className="flex justify-between items-center mb-5">
+            <h1 className="text-2xl font-bold text-primary">
               Your Subjects
             </h1>
             <button
-              className="btn btn-primary"
+              className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200"
               onClick={() => setShowModal(true)}
             >
               <span>➕</span> Add Subject
             </button>
           </div>
 
-          <div className="subjects-grid">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {subjects.map((subject) => {
               const sid = String(subject._id);
               const n = docCountBySubject[sid] ?? 0;
               return (
-                <div key={subject._id} className="subject-card">
+                <div key={subject._id} className="bg-surface p-6 rounded-lg shadow-md border border-border hover:shadow-lg transition-shadow duration-200">
                   <div
                     role="button"
                     tabIndex={0}
@@ -215,26 +198,20 @@ export default function Dashboard() {
                     }}
                     style={{ cursor: "pointer" }}
                   >
-                    <div className="subject-name">{subject.name}</div>
+                    <div className="text-xl font-semibold text-text mb-1">{subject.name}</div>
                     {subject.code && (
-                      <div className="subject-code">{subject.code}</div>
+                      <div className="text-text-muted mb-3">{subject.code}</div>
                     )}
-                    <div className="subject-stats">
+                    <div className="text-text-light text-sm">
                       <span>
                         📄 {n} document{n === 1 ? "" : "s"} — open list
                       </span>
                     </div>
                   </div>
-                  <div style={{ marginTop: "12px", fontSize: "0.85rem" }}>
+                  <div className="mt-3">
                     <Link
                       href={`/subjects/${sid}`}
-                      style={{
-                        display: "inline-block",
-                        padding: "6px 10px",
-                        borderRadius: "6px",
-                        textDecoration: "none",
-                        color: "var(--primary)",
-                      }}
+                      className="inline-block px-3 py-1.5 bg-primary/10 text-primary rounded-md text-sm no-underline hover:bg-primary/20 transition-colors duration-200"
                       onClick={(e) => e.stopPropagation()}
                     >
                       Subject page (by type) →
@@ -244,19 +221,12 @@ export default function Dashboard() {
               );
             })}
             {subjects.length === 0 && (
-              <div
-                className="card"
-                style={{
-                  gridColumn: "1 / -1",
-                  textAlign: "center",
-                  padding: "40px",
-                }}
-              >
-                <p style={{ color: "var(--text-light)", marginBottom: "20px" }}>
+              <div className="bg-surface p-10 rounded-lg shadow-md border border-border text-center col-span-full">
+                <p className="text-text-light mb-5">
                   No subjects yet. Add your first subject to get started!
                 </p>
                 <button
-                  className="btn btn-primary"
+                  className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition-colors duration-200"
                   onClick={() => setShowModal(true)}
                 >
                   <span>➕</span> Add Subject
@@ -268,22 +238,22 @@ export default function Dashboard() {
       </div>
 
       {showModal && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3 className="modal-title">Add New Subject</h3>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowModal(false)}>
+          <div className="bg-surface p-6 rounded-lg shadow-lg max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-text">Add New Subject</h3>
               <button
-                className="modal-close"
+                className="text-text-muted hover:text-text text-xl"
                 onClick={() => setShowModal(false)}
               >
                 &times;
               </button>
             </div>
-            <div className="form-group">
-              <label className="form-label">Subject Name *</label>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-text mb-1">Subject Name *</label>
               <input
                 type="text"
-                className="form-input"
+                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                 value={newSubject.name}
                 onChange={(e) =>
                   setNewSubject({ ...newSubject, name: e.target.value })
@@ -291,11 +261,11 @@ export default function Dashboard() {
                 placeholder="e.g., Mathematics"
               />
             </div>
-            <div className="form-group">
-              <label className="form-label">Subject Code (Optional)</label>
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-text mb-1">Subject Code (Optional)</label>
               <input
                 type="text"
-                className="form-input"
+                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                 value={newSubject.code}
                 onChange={(e) =>
                   setNewSubject({ ...newSubject, code: e.target.value })
@@ -303,14 +273,14 @@ export default function Dashboard() {
                 placeholder="e.g., MATH101"
               />
             </div>
-            <div className="modal-footer">
+            <div className="flex justify-end gap-3">
               <button
-                className="btn btn-secondary"
+                className="px-4 py-2 text-text-muted hover:text-text border border-border rounded-md transition-colors duration-200"
                 onClick={() => setShowModal(false)}
               >
                 Cancel
               </button>
-              <button className="btn btn-primary" onClick={handleAddSubject}>
+              <button className="px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-md transition-colors duration-200" onClick={handleAddSubject}>
                 Add Subject
               </button>
             </div>
@@ -319,7 +289,9 @@ export default function Dashboard() {
       )}
 
       {toast && (
-        <div className={`toast toast-${toast.type}`}>{toast.message}</div>
+        <div className={`fixed bottom-4 right-4 px-4 py-2 rounded-lg text-white ${toast.type === 'success' ? 'bg-success' : toast.type === 'error' ? 'bg-error' : 'bg-warning'} shadow-lg z-50`}>
+          {toast.message}
+        </div>
       )}
     </>
   );

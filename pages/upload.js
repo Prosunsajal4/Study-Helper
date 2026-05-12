@@ -2,24 +2,28 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { apiCall } from "../lib/api";
 
 export default function Upload() {
   const router = useRouter();
   const [step, setStep] = useState(1);
-  const [subjects, setSubjects] = useState([]);
   const [uploadData, setUploadData] = useState({
     subjectId: "",
-    newSubjectName: "",
-    newSubjectCode: "",
     docType: "study_material",
     file: null,
   });
-  const [uploading, setUploading] = useState(false);
+  const [subjects, setSubjects] = useState([]);
+  const [hasQuestionPattern, setHasQuestionPattern] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [extractedPreview, setExtractedPreview] = useState("");
   const [toast, setToast] = useState(null);
-  const [hasQuestionPattern, setHasQuestionPattern] = useState(false);
 
   useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      router.push("/login");
+      return;
+    }
     fetchSubjects();
   }, []);
 
@@ -31,7 +35,7 @@ export default function Upload() {
 
   const fetchSubjects = async () => {
     try {
-      const res = await fetch("/api/subjects");
+      const res = await apiCall("/api/subjects");
       const data = await res.json();
       setSubjects(Array.isArray(data) ? data : []);
     } catch (error) {
@@ -42,7 +46,7 @@ export default function Upload() {
 
   const checkQuestionPattern = async () => {
     try {
-      const res = await fetch(
+      const res = await apiCall(
         `/api/documents?subjectId=${uploadData.subjectId}&docType=question_pattern`,
       );
       const data = await res.json();

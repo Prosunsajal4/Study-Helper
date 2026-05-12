@@ -6,6 +6,14 @@ import { useRouter } from "next/router";
 import { apiCall } from "../../lib/api";
 
 export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
+}
 
 export default function DocumentDetail() {
   const router = useRouter();

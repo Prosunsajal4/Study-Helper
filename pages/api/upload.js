@@ -18,9 +18,9 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 const upload = multer({
-  dest: uploadDir,
+  dest: "public/uploads/",
   limits: {
-    fileSize: 20 * 1024 * 1024, // 20MB
+    fileSize: 50 * 1024 * 1024, // 50MB
   },
   fileFilter: (req, file, cb) => {
     const allowedTypes = [".pdf", ".docx"];
@@ -91,10 +91,7 @@ export default async function handler(req, res) {
 
     // Create final file path with original name
     const originalName = req.file.originalname;
-    const finalPath = path.join(
-      uploadDir,
-      `${Date.now()}-${originalName}`,
-    );
+    const finalPath = path.join(uploadDir, `${Date.now()}-${originalName}`);
     fs.renameSync(req.file.path, finalPath);
 
     // Save document to database

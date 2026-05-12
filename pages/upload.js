@@ -105,6 +105,13 @@ export default function Upload() {
       return;
     }
 
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      showToast("Please login to upload documents", "error");
+      router.push("/login");
+      return;
+    }
+
     setLoading(true);
     try {
       const formData = new FormData();
@@ -115,7 +122,7 @@ export default function Upload() {
       const res = await fetch("/api/upload", {
         method: "POST",
         headers: {
-          "x-user-id": localStorage.getItem("userId"),
+          "x-user-id": userId,
         },
         body: formData,
       });
@@ -127,12 +134,14 @@ export default function Upload() {
         showToast("Document uploaded successfully", "success");
       } else {
         const error = await res.json();
+        console.error("Upload error:", error);
         showToast(error.error || "Upload failed", "error");
       }
     } catch (error) {
+      console.error("Upload error:", error);
       showToast("Error uploading document", "error");
     } finally {
-      setUploading(false);
+      setLoading(false);
     }
   };
 

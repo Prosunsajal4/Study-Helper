@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { apiCall } from "../lib/api";
 import AnswerRenderer from "../components/AnswerRenderer";
 
 export default function QuestionsBrowser() {
@@ -9,13 +10,19 @@ export default function QuestionsBrowser() {
   const [questions, setQuestions] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [filters, setFilters] = useState({ subjectId: "", examType: "" });
-  const [expandedCard, setExpandedCard] = useState(null);
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [showExamModal, setShowExamModal] = useState(false);
   const [examTitle, setExamTitle] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [expandedCard, setExpandedCard] = useState(null);
   const [toast, setToast] = useState(null);
 
   useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      router.push("/login");
+      return;
+    }
     fetchData();
   }, []);
 
@@ -27,20 +34,18 @@ export default function QuestionsBrowser() {
 
   const fetchData = async () => {
     try {
-      const [subjectsRes, questionsRes] = await Promise.all([
-        fetch("/api/subjects"),
-        fetch("/api/questions"),
-      ]);
-
+      const subjectsRes = await apiCall("/api/subjects");
+      const questionsRes = await apiCall("/api/questions");
       const subjectsData = await subjectsRes.json();
       const questionsData = await questionsRes.json();
-
       setSubjects(Array.isArray(subjectsData) ? subjectsData : []);
       setQuestions(Array.isArray(questionsData) ? questionsData : []);
     } catch (error) {
       console.error("Error fetching data:", error);
       setSubjects([]);
       setQuestions([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -50,7 +55,7 @@ export default function QuestionsBrowser() {
       if (filters.subjectId) params.append("subjectId", filters.subjectId);
       if (filters.examType) params.append("examType", filters.examType);
 
-      const res = await fetch(`/api/questions?${params}`);
+      const res = await apiCall(`/api/questions?${params}`);
       const data = await res.json();
       setQuestions(Array.isArray(data) ? data : []);
     } catch (error) {

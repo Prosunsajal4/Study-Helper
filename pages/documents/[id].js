@@ -3,6 +3,7 @@ import AnswerRenderer from "../../components/AnswerRenderer";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { apiCall } from "../../lib/api";
 
 export default function DocumentDetail() {
   const router = useRouter();
@@ -21,9 +22,14 @@ export default function DocumentDetail() {
   const [hasQuestionPattern, setHasQuestionPattern] = useState(false);
   const [subjectDocuments, setSubjectDocuments] = useState([]);
   const [selectedDocsForGen, setSelectedDocsForGen] = useState([]);
-  const [loadError, setLoadError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      router.push("/login");
+      return;
+    }
     if (id) {
       fetchData();
     }
@@ -31,32 +37,22 @@ export default function DocumentDetail() {
 
   const fetchData = async () => {
     try {
-      setLoadError(null);
-      const res = await fetch(`/api/documents/${id}`);
+      const res = await apiCall(`/api/documents/${id}`);
       const data = await res.json();
-      if (!res.ok) {
-        setDocument(null);
-        setLoadError(data.error || "Could not load document");
-        setHighlights([]);
-        setQuestions([]);
-        return;
-      }
       setDocument(data);
       setHighlights(Array.isArray(data.highlights) ? data.highlights : []);
       setQuestions(Array.isArray(data.questions) ? data.questions : []);
 
-      const subjectIdParam = encodeURIComponent(String(data.subjectId ?? ""));
-
       // Check if subject has question pattern
-      const patternRes = await fetch(
-        `/api/documents?subjectId=${subjectIdParam}&docType=question_pattern`,
+      const patternRes = await apiCall(
+        `/api/documents?subjectId=${data.subjectId}&docType=question_pattern`,
       );
       const patterns = await patternRes.json();
       setHasQuestionPattern(Array.isArray(patterns) && patterns.length > 0);
 
       // Check if this document's pattern is already extracted
       if (data.docType === "question_pattern") {
-        const patternCheckRes = await fetch(
+        const patternCheckRes = await apiCall(
           `/api/question-patterns?documentId=${id}`,
         );
         const patternData = await patternCheckRes.json();
@@ -66,8 +62,8 @@ export default function DocumentDetail() {
       }
 
       // Get all documents for this subject for multi-doc generation
-      const subjectDocsRes = await fetch(
-        `/api/documents?subjectId=${subjectIdParam}`,
+      const subjectDocsRes = await apiCall(
+        `/api/documents?subjectId=${data.subjectId}`,
       );
       const subjectDocs = await subjectDocsRes.json();
       const studyMaterials = Array.isArray(subjectDocs)
@@ -78,23 +74,22 @@ export default function DocumentDetail() {
       setSubjectDocuments(studyMaterials);
       // Auto-select current document if it's study material
       if (data.docType === "study_material" || data.docType === "textbook") {
-        setSelectedDocsForGen([String(id)]);
+        setSelectedDocsForGen([id]);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      setDocument(null);
-      setLoadError("Could not load document");
       setHighlights([]);
       setQuestions([]);
+    } finally {
+      setLoading(false);
     }
   };
 
   const generateHighlights = async () => {
     setGenerating({ ...generating, highlights: true });
     try {
-      const res = await fetch("/api/highlights/generate", {
+      const res = await apiCall("/api/highlights/generate", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ documentId: id }),
       });
 
@@ -116,9 +111,8 @@ export default function DocumentDetail() {
   const extractPattern = async () => {
     setExtractingPattern(true);
     try {
-      const res = await fetch("/api/question-patterns/extract", {
+      const res = await apiCall("/api/question-patterns/extract", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ documentId: id }),
       });
 

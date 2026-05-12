@@ -1,13 +1,22 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { apiCall } from "../lib/api";
 
 export default function HighlightsBrowser() {
+  const router = useRouter();
   const [highlights, setHighlights] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [filters, setFilters] = useState({ subjectId: "", searchQuery: "" });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      router.push("/login");
+      return;
+    }
     fetchData();
   }, []);
 
@@ -19,20 +28,18 @@ export default function HighlightsBrowser() {
 
   const fetchData = async () => {
     try {
-      const [subjectsRes, highlightsRes] = await Promise.all([
-        fetch("/api/subjects"),
-        fetch("/api/highlights"),
-      ]);
-
+      const subjectsRes = await apiCall("/api/subjects");
+      const highlightsRes = await apiCall("/api/highlights");
       const subjectsData = await subjectsRes.json();
       const highlightsData = await highlightsRes.json();
-
       setSubjects(Array.isArray(subjectsData) ? subjectsData : []);
       setHighlights(Array.isArray(highlightsData) ? highlightsData : []);
     } catch (error) {
       console.error("Error fetching data:", error);
       setSubjects([]);
       setHighlights([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -41,7 +48,7 @@ export default function HighlightsBrowser() {
       const params = new URLSearchParams();
       if (filters.subjectId) params.append("subjectId", filters.subjectId);
 
-      const res = await fetch(`/api/highlights?${params}`);
+      const res = await apiCall(`/api/highlights?${params}`);
       const data = await res.json();
       setHighlights(Array.isArray(data) ? data : []);
     } catch (error) {

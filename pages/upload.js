@@ -101,15 +101,18 @@ export default function Upload() {
       return;
     }
 
-    setUploading(true);
-    const formData = new FormData();
-    formData.append("file", uploadData.file);
-    formData.append("subjectId", uploadData.subjectId);
-    formData.append("docType", uploadData.docType);
-
+    setLoading(true);
     try {
+      const formData = new FormData();
+      formData.append("file", uploadData.file);
+      formData.append("subjectId", uploadData.subjectId);
+      formData.append("docType", uploadData.docType);
+
       const res = await fetch("/api/upload", {
         method: "POST",
+        headers: {
+          "x-user-id": localStorage.getItem("userId"),
+        },
         body: formData,
       });
 

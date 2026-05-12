@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import { apiCall } from "../lib/api";
 import AnswerRenderer from "../components/AnswerRenderer";
 
+export const dynamic = "force-dynamic";
+
 export default function QuestionsBrowser() {
   const router = useRouter();
   const [questions, setQuestions] = useState([]);

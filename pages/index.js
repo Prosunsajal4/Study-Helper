@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { apiCall } from "../lib/api";
 
+export const dynamic = "force-dynamic";
+
 export default function Dashboard() {
   const [subjects, setSubjects] = useState([]);
   const [stats, setStats] = useState({

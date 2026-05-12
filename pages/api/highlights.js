@@ -6,11 +6,16 @@ export default async function handler(req, res) {
   }
 
   try {
+    const userId = req.headers["x-user-id"];
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
     const db = await connectDB();
     const { subjectId, documentId } = req.query;
     const ObjectId = require("mongodb").ObjectId;
 
-    let query = {};
+    let query = { userId: new ObjectId(userId) };
     if (subjectId) {
       query.subjectId = new ObjectId(subjectId);
     }

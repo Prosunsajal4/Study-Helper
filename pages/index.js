@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { apiCall } from "../lib/api";
 
 export default function Dashboard() {
   const [subjects, setSubjects] = useState([]);
@@ -15,8 +16,14 @@ export default function Dashboard() {
   const [toast, setToast] = useState(null);
   const [docCountBySubject, setDocCountBySubject] = useState({});
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      router.push("/login");
+      return;
+    }
     fetchData();
   }, []);
 
@@ -24,10 +31,10 @@ export default function Dashboard() {
     try {
       const [subjectsRes, docsRes, highlightsRes, questionsRes] =
         await Promise.all([
-          fetch("/api/subjects"),
-          fetch("/api/documents?omitDocTypes=question_pattern"),
-          fetch("/api/highlights"),
-          fetch("/api/questions"),
+          apiCall("/api/subjects"),
+          apiCall("/api/documents?omitDocTypes=question_pattern"),
+          apiCall("/api/highlights"),
+          apiCall("/api/questions"),
         ]);
 
       const subjectsData = await subjectsRes.json();
@@ -57,6 +64,8 @@ export default function Dashboard() {
       setSubjects([]);
       setDocCountBySubject({});
       setStats({ documents: 0, highlights: 0, questions: 0 });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -67,9 +76,8 @@ export default function Dashboard() {
     }
 
     try {
-      const res = await fetch("/api/subjects", {
+      const res = await apiCall("/api/subjects", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newSubject),
       });
 

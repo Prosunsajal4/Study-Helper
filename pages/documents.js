@@ -2,16 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { apiCall } from "../lib/api";
 
 export default function AllDocuments() {
   const router = useRouter();
   const [documents, setDocuments] = useState([]);
   const [subjects, setSubjects] = useState([]);
-  const [filters, setFilters] = useState({
-    subjectId: "",
-    docType: "",
-    includeQuestionPatterns: false,
-  });
+  const [filters, setFilters] = useState({ subjectId: "", docType: "" });
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [documentToDelete, setDocumentToDelete] = useState(null);
   const [toast, setToast] = useState(null);
@@ -19,7 +16,23 @@ export default function AllDocuments() {
   const [showGenerateModal, setShowGenerateModal] = useState(false);
   const [examType, setExamType] = useState("ct");
   const [generating, setGenerating] = useState(false);
+  const [loading, setLoading] = useState(true);
   const hydratedSubjectFromUrl = useRef(false);
+
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      router.push("/login");
+      return;
+    }
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (filters.subjectId || filters.docType) {
+      fetchDocuments();
+    }
+  }, [filters]);
 
   useEffect(() => {
     if (!router.isReady || hydratedSubjectFromUrl.current) return;
@@ -27,69 +40,37 @@ export default function AllDocuments() {
     const raw = router.query.subjectId;
     const sid = Array.isArray(raw) ? raw[0] : raw;
     if (sid && typeof sid === "string") {
-      setFilters((f) => ({ ...f, subjectId: sid, includeQuestionPatterns: false }));
+      setFilters((f) => ({ ...f, subjectId: sid }));
     }
   }, [router.isReady, router.query.subjectId]);
 
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const subjectsRes = await fetch("/api/subjects");
-        const subjectsData = await subjectsRes.json();
-        setSubjects(Array.isArray(subjectsData) ? subjectsData : []);
-      } catch (error) {
-        console.error("Error fetching subjects:", error);
-        setSubjects([]);
-      }
-    };
-    load();
-  }, []);
-
-  useEffect(() => {
-    const run = async () => {
-      try {
-        const params = new URLSearchParams();
-        if (filters.subjectId) params.append("subjectId", filters.subjectId);
-        if (filters.docType) {
-          params.append("docType", filters.docType);
-        } else if (!filters.includeQuestionPatterns) {
-          params.append("omitDocTypes", "question_pattern");
-        }
-
-        const res = await fetch(`/api/documents?${params}`);
-        const data = await res.json();
-        setDocuments(Array.isArray(data) ? data : []);
-      } catch (error) {
-        console.error("Error fetching documents:", error);
-        setDocuments([]);
-      }
-    };
-    run();
-  }, [
-    filters.subjectId,
-    filters.docType,
-    filters.includeQuestionPatterns,
-  ]);
-
   const fetchData = async () => {
     try {
-      const subjectsRes = await fetch("/api/subjects");
+      const subjectsRes = await apiCall("/api/subjects");
       const subjectsData = await subjectsRes.json();
       setSubjects(Array.isArray(subjectsData) ? subjectsData : []);
+      await fetchDocuments();
+    } catch (error) {
+      console.error("Error fetching subjects:", error);
+      setSubjects([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const fetchDocuments = async () => {
+    try {
       const params = new URLSearchParams();
       if (filters.subjectId) params.append("subjectId", filters.subjectId);
       if (filters.docType) {
         params.append("docType", filters.docType);
-      } else if (!filters.includeQuestionPatterns) {
-        params.append("omitDocTypes", "question_pattern");
       }
-      const documentsRes = await fetch(`/api/documents?${params}`);
-      const documentsData = await documentsRes.json();
-      setDocuments(Array.isArray(documentsData) ? documentsData : []);
+
+      const res = await apiCall(`/api/documents?${params}`);
+      const data = await res.json();
+      setDocuments(Array.isArray(data) ? data : []);
     } catch (error) {
-      console.error("Error fetching data:", error);
-      setSubjects([]);
+      console.error("Error fetching documents:", error);
       setDocuments([]);
     }
   };
@@ -106,9 +87,8 @@ export default function AllDocuments() {
   const confirmGenerateQuestions = async () => {
     setGenerating(true);
     try {
-      const res = await fetch("/api/questions/generate", {
+      const res = await apiCall("/api/questions/generate", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           documentIds: selectedDocuments,
           examType,
@@ -144,7 +124,7 @@ export default function AllDocuments() {
     if (!documentToDelete) return;
 
     try {
-      const res = await fetch(`/api/documents/${documentToDelete}`, {
+      const res = await apiCall(`/api/documents/${documentToDelete}`, {
         method: "DELETE",
       });
 
@@ -311,7 +291,9 @@ export default function AllDocuments() {
                 >
                   <option value="">Study materials & textbooks</option>
                   <option value="study_material">Study Material only</option>
-                  <option value="question_pattern">Question pattern only</option>
+                  <option value="question_pattern">
+                    Question pattern only
+                  </option>
                   <option value="textbook">Textbook only</option>
                 </select>
               </div>
@@ -368,7 +350,9 @@ export default function AllDocuments() {
                       }
                       onChange={(e) => {
                         if (e.target.checked) {
-                          setSelectedDocuments(documents.map((d) => String(d._id)));
+                          setSelectedDocuments(
+                            documents.map((d) => String(d._id)),
+                          );
                         } else {
                           setSelectedDocuments([]);
                         }

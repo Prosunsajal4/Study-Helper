@@ -173,6 +173,7 @@ ${combinedText}`;
 
     // Save questions to database
     const questionRecord = {
+      userId: new ObjectId(userId),
       documentIds: documentIds.map((id) => new ObjectId(id)),
       subjectId: documents[0].subjectId,
       examType,

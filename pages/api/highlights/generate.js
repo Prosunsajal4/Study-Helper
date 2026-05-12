@@ -7,6 +7,11 @@ export default async function handler(req, res) {
   }
 
   try {
+    const userId = req.headers["x-user-id"];
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
     const { documentId } = req.body;
     const ObjectId = require("mongodb").ObjectId;
 
@@ -16,16 +21,17 @@ export default async function handler(req, res) {
 
     const db = await connectDB();
 
-    // Get document
+    // Get document and verify ownership
     const document = await db.collection("documents").findOne({
       _id: new ObjectId(documentId),
+      userId: new ObjectId(userId),
     });
 
     if (!document) {
       return res.status(404).json({ error: "Document not found" });
     }
 
-    // Generate highlights using Claude
+    // Generate highlights using Gemini
     const systemPrompt =
       "You are a study assistant. Analyze the provided academic text and extract the most important points for exam preparation. Return a JSON array of highlights: [{ text: string, importance: 'high'|'medium', topic: string }]. High importance = likely to appear in exams. Return ONLY valid JSON, no markdown.";
 
@@ -36,7 +42,6 @@ export default async function handler(req, res) {
     try {
       highlights = JSON.parse(response);
     } catch (parseError) {
-      // Try to extract JSON from markdown code block
       const jsonMatch =
         response.match(/```json\n([\s\S]*?)\n```/) ||
         response.match(/\[[\s\S]*\]/);
@@ -49,6 +54,7 @@ export default async function handler(req, res) {
 
     // Save highlights to database
     const highlightRecord = {
+      userId: new ObjectId(userId),
       documentId: new ObjectId(documentId),
       subjectId: document.subjectId,
       content: highlights,

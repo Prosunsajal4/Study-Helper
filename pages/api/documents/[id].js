@@ -7,11 +7,17 @@ export default async function handler(req, res) {
   const ObjectId = require("mongodb").ObjectId;
 
   try {
+    const userId = req.headers["x-user-id"];
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
     const db = await connectDB();
 
     if (req.method === "GET") {
       const document = await db.collection("documents").findOne({
         _id: new ObjectId(id),
+        userId: new ObjectId(userId),
       });
 
       if (!document) {
@@ -21,13 +27,13 @@ export default async function handler(req, res) {
       // Get highlights for this document
       const highlights = await db
         .collection("highlights")
-        .find({ documentId: new ObjectId(id) })
+        .find({ documentId: new ObjectId(id), userId: new ObjectId(userId) })
         .toArray();
 
-      // Question sets store source documents on `documentIds` (see /api/questions/generate)
+      // Get questions for this document
       const questions = await db
         .collection("questions")
-        .find({ documentIds: new ObjectId(id) })
+        .find({ documentIds: new ObjectId(id), userId: new ObjectId(userId) })
         .toArray();
 
       res.status(200).json({
@@ -38,6 +44,7 @@ export default async function handler(req, res) {
     } else if (req.method === "DELETE") {
       const document = await db.collection("documents").findOne({
         _id: new ObjectId(id),
+        userId: new ObjectId(userId),
       });
 
       if (!document) {
@@ -52,18 +59,23 @@ export default async function handler(req, res) {
       // Delete associated highlights
       await db
         .collection("highlights")
-        .deleteMany({ documentId: new ObjectId(id) });
+        .deleteMany({
+          documentId: new ObjectId(id),
+          userId: new ObjectId(userId),
+        });
 
+      // Delete associated questions
       await db
         .collection("questions")
-        .deleteMany({ documentIds: new ObjectId(id) });
-
-      await db
-        .collection("questionPatterns")
-        .deleteMany({ documentId: new ObjectId(id) });
+        .deleteMany({
+          documentIds: new ObjectId(id),
+          userId: new ObjectId(userId),
+        });
 
       // Delete document from database
-      await db.collection("documents").deleteOne({ _id: new ObjectId(id) });
+      await db
+        .collection("documents")
+        .deleteOne({ _id: new ObjectId(id), userId: new ObjectId(userId) });
 
       res.status(200).json({ message: "Document deleted successfully" });
     } else {

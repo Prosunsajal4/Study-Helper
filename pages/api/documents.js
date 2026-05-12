@@ -1,4 +1,4 @@
-const { connectDB } = require("../../lib/db");
+const { connectDB, getDB } = require("../../lib/db");
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -7,25 +7,15 @@ export default async function handler(req, res) {
 
   try {
     const db = await connectDB();
-    const { subjectId, docType, omitDocTypes } = req.query;
+    const { subjectId, docType } = req.query;
     const ObjectId = require("mongodb").ObjectId;
 
-    let query = {};
+    let query = { userId: req.user._id };
     if (subjectId) {
       query.subjectId = new ObjectId(subjectId);
     }
     if (docType) {
       query.docType = docType;
-    } else if (omitDocTypes) {
-      const parts = String(omitDocTypes)
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean);
-      if (parts.length === 1) {
-        query.docType = { $ne: parts[0] };
-      } else if (parts.length > 1) {
-        query.docType = { $nin: parts };
-      }
     }
 
     const documents = await db

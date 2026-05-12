@@ -1,4 +1,4 @@
-const { connectDB } = require("../../lib/db");
+const { connectDB, getDB } = require("../../lib/db");
 const { parseFile } = require("../../lib/parseFile");
 const { callGemini } = require("../../lib/gemini");
 const { extractExamPatternWithGemini } = require("../../lib/examPattern");
@@ -48,6 +48,12 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Check authentication
+    const userId = req.headers["x-user-id"];
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
     await runMiddleware(req, res, upload.single("file"));
 
     if (!req.file) {
@@ -57,7 +63,6 @@ export default async function handler(req, res) {
     const { subjectId, docType } = req.body;
 
     if (!subjectId || !docType) {
-      // Clean up uploaded file
       fs.unlinkSync(req.file.path);
       return res
         .status(400)
@@ -73,10 +78,10 @@ export default async function handler(req, res) {
     const db = await connectDB();
     const ObjectId = require("mongodb").ObjectId;
 
-    // Verify subject exists
+    // Verify subject exists and belongs to user
     const subject = await db
       .collection("subjects")
-      .findOne({ _id: new ObjectId(subjectId) });
+      .findOne({ _id: new ObjectId(subjectId), userId: new ObjectId(userId) });
     if (!subject) {
       fs.unlinkSync(req.file.path);
       return res.status(404).json({ error: "Subject not found" });
@@ -91,11 +96,15 @@ export default async function handler(req, res) {
 
     // Create final file path with original name
     const originalName = req.file.originalname;
-    const finalPath = path.join(uploadDir, `${Date.now()}-${originalName}`);
+    const finalPath = path.join(
+      "public/uploads",
+      `${Date.now()}-${originalName}`,
+    );
     fs.renameSync(req.file.path, finalPath);
 
     // Save document to database
     const document = {
+      userId: new ObjectId(userId),
       subjectId: new ObjectId(subjectId),
       fileName: originalName,
       fileType,
@@ -112,19 +121,55 @@ export default async function handler(req, res) {
     let patternExtracted = false;
     if (docType === "question_pattern") {
       try {
-        const patternData = await extractExamPatternWithGemini(
-          extractedText,
-          callGemini,
-        );
-        await db.collection("questionPatterns").insertOne({
-          documentId: new ObjectId(result.insertedId),
-          subjectId: new ObjectId(subjectId),
-          patternText: extractedText,
-          extractedPattern: patternData,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        });
-        patternExtracted = true;
+        const systemPrompt = `You are an exam pattern analyzer. Analyze the provided question paper and extract the question pattern structure. 
+Return a JSON object with this exact structure:
+{
+  "patterns": [
+    {
+      "section": "Section A/B/C etc",
+      "questionType": "MCQ/Short Answer/Long Answer/ etc",
+      "marksPerQuestion": number,
+      "totalQuestions": number,
+      "topics": ["topic1", "topic2"],
+      "difficulty": "easy/medium/hard"
+    }
+  ],
+  "totalMarks": number,
+  "examDuration": "duration in minutes or hours",
+  "commonTopics": ["topic1", "topic2"],
+  "questionDistribution": {
+    "easy": percentage,
+    "medium": percentage,
+    "hard": percentage
+  }
+}
+
+Return ONLY valid JSON, no markdown.`;
+        const response = await callGemini(systemPrompt, extractedText);
+        let patternData;
+        try {
+          patternData = JSON.parse(response);
+        } catch (parseError) {
+          const jsonMatch =
+            response.match(/```json\n([\s\S]*?)\n```/) ||
+            response.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            patternData = JSON.parse(jsonMatch[1] || jsonMatch[0]);
+          }
+        }
+
+        if (patternData) {
+          await db.collection("questionPatterns").insertOne({
+            userId: new ObjectId(userId),
+            documentId: new ObjectId(result.insertedId),
+            subjectId: new ObjectId(subjectId),
+            patternText: extractedText,
+            extractedPattern: patternData,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          });
+          patternExtracted = true;
+        }
       } catch (patternError) {
         console.error("Auto pattern extraction failed:", patternError);
       }
@@ -139,7 +184,6 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error("Upload error:", error);
 
-    // Clean up uploaded file if it exists
     if (req.file && req.file.path && fs.existsSync(req.file.path)) {
       fs.unlinkSync(req.file.path);
     }

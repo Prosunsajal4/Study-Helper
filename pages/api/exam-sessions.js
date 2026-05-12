@@ -6,13 +6,20 @@ export default async function handler(req, res) {
   }
 
   try {
+    const userId = req.headers["x-user-id"];
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
     const { subjectId, examType, title, selectedQuestionIds } = req.body;
 
     if (!subjectId || !examType || !title || !selectedQuestionIds) {
-      return res.status(400).json({
-        error:
-          "subjectId, examType, title, and selectedQuestionIds are required",
-      });
+      return res
+        .status(400)
+        .json({
+          error:
+            "subjectId, examType, title, and selectedQuestionIds are required",
+        });
     }
 
     const db = await connectDB();
@@ -22,7 +29,7 @@ export default async function handler(req, res) {
     const questionIds = selectedQuestionIds.map((id) => new ObjectId(id));
     const questionRecords = await db
       .collection("questions")
-      .find({ _id: { $in: questionIds } })
+      .find({ _id: { $in: questionIds }, userId: new ObjectId(userId) })
       .toArray();
 
     // Compile all questions into a single set
@@ -32,6 +39,7 @@ export default async function handler(req, res) {
     });
 
     const examSession = {
+      userId: new ObjectId(userId),
       subjectId: new ObjectId(subjectId),
       examType,
       title,
@@ -45,8 +53,6 @@ export default async function handler(req, res) {
     res.status(201).json(examSession);
   } catch (error) {
     console.error("Exam session creation error:", error);
-    res
-      .status(500)
-      .json({ error: error.message || "Failed to create exam session" });
+    res.status(500).json({ error: "Failed to create exam session" });
   }
 }

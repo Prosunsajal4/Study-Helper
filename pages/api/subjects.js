@@ -12,7 +12,7 @@ export default async function handler(req, res) {
         try {
           subject = await db
             .collection("subjects")
-            .findOne({ _id: new ObjectId(String(id)) });
+            .findOne({ _id: new ObjectId(String(id)), userId: req.user._id });
         } catch {
           return res.status(400).json({ error: "Invalid subject id" });
         }
@@ -23,20 +23,23 @@ export default async function handler(req, res) {
       }
       const subjects = await db
         .collection("subjects")
-        .find({})
+        .find({ userId: req.user._id })
         .sort({ createdAt: -1 })
         .toArray();
       res.status(200).json(subjects);
     } else if (req.method === "POST") {
       const { name, code } = req.body;
 
-      if (!name) {
-        return res.status(400).json({ error: "Subject name is required" });
+      if (!name || !code) {
+        return res.status(400).json({ error: "Name and code are required" });
       }
+
+      const db = await connectDB();
 
       const subject = {
         name,
-        code: code || "",
+        code,
+        userId: req.user._id,
         createdAt: new Date(),
       };
 

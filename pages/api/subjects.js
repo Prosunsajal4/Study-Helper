@@ -3,6 +3,12 @@ const { ObjectId } = require("mongodb");
 
 export default async function handler(req, res) {
   try {
+    // Check authentication
+    const userId = req.headers["x-user-id"];
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
     const db = await connectDB();
 
     if (req.method === "GET") {
@@ -12,7 +18,10 @@ export default async function handler(req, res) {
         try {
           subject = await db
             .collection("subjects")
-            .findOne({ _id: new ObjectId(String(id)), userId: req.user._id });
+            .findOne({
+              _id: new ObjectId(String(id)),
+              userId: new ObjectId(userId),
+            });
         } catch {
           return res.status(400).json({ error: "Invalid subject id" });
         }
@@ -23,7 +32,7 @@ export default async function handler(req, res) {
       }
       const subjects = await db
         .collection("subjects")
-        .find({ userId: req.user._id })
+        .find({ userId: new ObjectId(userId) })
         .sort({ createdAt: -1 })
         .toArray();
       res.status(200).json(subjects);
@@ -34,12 +43,10 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: "Name and code are required" });
       }
 
-      const db = await connectDB();
-
       const subject = {
         name,
         code,
-        userId: req.user._id,
+        userId: new ObjectId(userId),
         createdAt: new Date(),
       };
 

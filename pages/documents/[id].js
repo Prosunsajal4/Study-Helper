@@ -142,9 +142,8 @@ export default function DocumentDetail() {
 
     setGenerating({ ...generating, [examType]: true });
     try {
-      const res = await fetch("/api/questions/generate", {
+      const res = await apiCall("/api/questions/generate", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ documentIds: selectedDocsForGen, examType }),
       });
 
@@ -242,6 +241,25 @@ export default function DocumentDetail() {
             <Link href="/highlights" className="nav-item">
               <span>✨</span> Highlights
             </Link>
+            <button
+              onClick={() => {
+                localStorage.clear();
+                router.push("/login");
+              }}
+              className="nav-item"
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                width: "100%",
+                textAlign: "left",
+                padding: "12px 16px",
+                color: "var(--text-light)",
+                marginTop: "20px",
+              }}
+            >
+              <span>🚪</span> Logout
+            </button>
           </nav>
         </aside>
 

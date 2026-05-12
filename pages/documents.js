@@ -206,7 +206,7 @@ export default function AllDocuments() {
             <Link href="/upload" className="nav-item">
               <span>📤</span> Upload
             </Link>
-            <Link href="/documents" className="nav-item active">
+            <Link href="/documents" className="nav-item">
               <span>📄</span> Documents
             </Link>
             <Link href="/questions" className="nav-item">
@@ -215,6 +215,25 @@ export default function AllDocuments() {
             <Link href="/highlights" className="nav-item">
               <span>✨</span> Highlights
             </Link>
+            <button
+              onClick={() => {
+                localStorage.clear();
+                router.push("/login");
+              }}
+              className="nav-item"
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                width: "100%",
+                textAlign: "left",
+                padding: "12px 16px",
+                color: "var(--text-light)",
+                marginTop: "20px",
+              }}
+            >
+              <span>🚪</span> Logout
+            </button>
           </nav>
         </aside>
 

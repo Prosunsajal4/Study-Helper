@@ -82,17 +82,16 @@ export default function QuestionsBrowser() {
 
   const createExamSession = async () => {
     if (!examTitle || selectedQuestions.length === 0) {
-      showToast("Please enter a title and select questions", "error");
+      showToast("Please enter exam title and select questions", "error");
       return;
     }
 
     try {
-      const res = await fetch("/api/exam-sessions", {
+      const res = await apiCall("/api/exam-sessions", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          subjectId: filters.subjectId || questions[0]?.subjectId,
-          examType: filters.examType || "ct",
+          subjectId: filters.subjectId,
+          examType: filters.examType,
           title: examTitle,
           selectedQuestionIds: selectedQuestions,
         }),
@@ -145,12 +144,31 @@ export default function QuestionsBrowser() {
             <Link href="/documents" className="nav-item">
               <span>📄</span> Documents
             </Link>
-            <Link href="/questions" className="nav-item active">
+            <Link href="/questions" className="nav-item">
               <span>❓</span> Questions
             </Link>
             <Link href="/highlights" className="nav-item">
               <span>✨</span> Highlights
             </Link>
+            <button
+              onClick={() => {
+                localStorage.clear();
+                router.push("/login");
+              }}
+              className="nav-item"
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                width: "100%",
+                textAlign: "left",
+                padding: "12px 16px",
+                color: "var(--text-light)",
+                marginTop: "20px",
+              }}
+            >
+              <span>🚪</span> Logout
+            </button>
           </nav>
         </aside>
 

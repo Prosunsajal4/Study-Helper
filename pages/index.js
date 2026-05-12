@@ -19,10 +19,12 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    if (!userId) {
-      router.push("/login");
-      return;
+    if (typeof window !== "undefined") {
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        router.push("/login");
+        return;
+      }
     }
     fetchData();
   }, []);

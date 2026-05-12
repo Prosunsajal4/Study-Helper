@@ -18,10 +18,12 @@ export default function QuestionsBrowser() {
   const [toast, setToast] = useState(null);
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    if (!userId) {
-      router.push("/login");
-      return;
+    if (typeof window !== "undefined") {
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        router.push("/login");
+        return;
+      }
     }
     fetchData();
   }, []);

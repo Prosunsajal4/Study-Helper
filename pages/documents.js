@@ -20,10 +20,12 @@ export default function AllDocuments() {
   const hydratedSubjectFromUrl = useRef(false);
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    if (!userId) {
-      router.push("/login");
-      return;
+    if (typeof window !== "undefined") {
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        router.push("/login");
+        return;
+      }
     }
     fetchData();
   }, []);

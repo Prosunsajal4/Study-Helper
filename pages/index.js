@@ -160,7 +160,7 @@ export default function Landing() {
                 </Link>
                 <Link
                   href="/signup"
-                  className="ml-4 rounded-md border border-primary px-5 py-3 text-sm font-medium text-primary hover:bg-primary/50 focus:outline-none focus:ring-2 focus-ring-primary focus:ring-offset-2"
+                  className="ml-4 rounded-md border border-primary px-5 py-3 text-sm font-medium text-primary hover:bg-primary/50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                 >
                   Sign Up Free
                 </Link>

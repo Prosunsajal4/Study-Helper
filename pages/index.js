@@ -38,7 +38,7 @@ export default function Landing() {
                 {/* -- */}
                 <Link
                   href="/signup"
-                  className="ml-4 rounded-md px-3 py-2 text-sm font-medium text-white bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus-ring-white focus:ring-offset-2"
+                  className="ml-4 rounded-md px-3 py-2 text-sm font-medium text-white bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
                 >
                   Sign up
                 </Link>
@@ -64,13 +64,13 @@ export default function Landing() {
                 <div className="mt-10 flex justify-center sm:justify-start space-x-4">
                   <Link
                     href="/login"
-                    className="rounded-md bg-white px-5 py-3 text-sm font-medium text-primary-shadow hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                    className="rounded-md bg-white px-5 py-3 text-sm font-medium text-primary hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                   >
                     Get Started
                   </Link>
                   <Link
                     href="/signup"
-                    className="rounded-md border border-white/20 px-5 py-3 text-sm font-medium text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus-ring-white focus:ring-offset-2"
+                    className="rounded-md border border-white/20 px-5 py-3 text-sm font-medium text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
                   >
                     Create Account
                   </Link>
@@ -172,7 +172,7 @@ export default function Landing() {
         {/* Footer */}
         <footer className="border-t border-gray-200 bg-white/5 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="flex flex-col sm:flex-sm-row sm:justify-between sm:items-center">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
               <div className="text-sm text-gray-500 mb-4 sm:mb-0">
                 © 2026 Study Assistant. All rights reserved.
               </div>

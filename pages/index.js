@@ -1,298 +1,193 @@
-import { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { apiCall } from "../lib/api";
+import { useState } from "react";
 
-export const dynamic = "force-dynamic";
-
-export default function Dashboard() {
-  const [subjects, setSubjects] = useState([]);
-  const [stats, setStats] = useState({
-    documents: 0,
-    highlights: 0,
-    questions: 0,
-  });
-  const [showModal, setShowModal] = useState(false);
-  const [newSubject, setNewSubject] = useState({ name: "", code: "" });
-  const [toast, setToast] = useState(null);
-  const [docCountBySubject, setDocCountBySubject] = useState({});
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const userId = localStorage.getItem("userId");
-      if (!userId) {
-        router.push("/login");
-        return;
-      }
-    }
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const [subjectsRes, docsRes, highlightsRes, questionsRes] =
-        await Promise.all([
-          apiCall("/api/subjects"),
-          apiCall("/api/documents?omitDocTypes=question_pattern"),
-          apiCall("/api/highlights"),
-          apiCall("/api/questions"),
-        ]);
-
-      const subjectsData = await subjectsRes.json();
-      const docsData = await docsRes.json();
-      const highlightsData = await highlightsRes.json();
-      const questionsData = await questionsRes.json();
-
-      setSubjects(Array.isArray(subjectsData) ? subjectsData : []);
-
-      const counts = {};
-      if (Array.isArray(docsData)) {
-        for (const d of docsData) {
-          const sid = String(d.subjectId ?? "");
-          if (!sid) continue;
-          counts[sid] = (counts[sid] || 0) + 1;
-        }
-      }
-      setDocCountBySubject(counts);
-
-      setStats({
-        documents: Array.isArray(docsData) ? docsData.length : 0,
-        highlights: Array.isArray(highlightsData) ? highlightsData.length : 0,
-        questions: Array.isArray(questionsData) ? questionsData.length : 0,
-      });
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setSubjects([]);
-      setDocCountBySubject({});
-      setStats({ documents: 0, highlights: 0, questions: 0 });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleAddSubject = async () => {
-    if (!newSubject.name) {
-      showToast("Subject name is required", "error");
-      return;
-    }
-
-    try {
-      const res = await apiCall("/api/subjects", {
-        method: "POST",
-        body: JSON.stringify(newSubject),
-      });
-
-      if (res.ok) {
-        showToast("Subject added successfully", "success");
-        setShowModal(false);
-        setNewSubject({ name: "", code: "" });
-        fetchData();
-      } else {
-        showToast("Failed to add subject", "error");
-      }
-    } catch (error) {
-      showToast("Error adding subject", "error");
-    }
-  };
-
-  const showToast = (message, type) => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
-  };
+export default function Landing() {
+  const [showSignup, setShowSignup] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
 
   return (
     <>
       <Head>
-        <title>Study Assistant - Dashboard</title>
+        <title>Study Assistant - AI-Powered Learning Platform</title>
         <meta
           name="description"
-          content="AI-powered study assistant for students"
+          content="Transform your study materials into interactive learning experiences with AI-powered flashcards, questions, and highlights"
         />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="flex min-h-screen">
-        <aside className="w-70 bg-gradient-to-b from-primary to-primary-dark text-white p-6 fixed h-screen overflow-y-auto shadow-lg">
-          <h2 className="text-xl font-bold mb-8 flex items-center gap-3">
-            📚 Study Assistant
-          </h2>
-          <nav>
-            <Link href="/" className="flex items-center py-3 px-4 text-white/80 no-underline rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer">
-              <span className="mr-3">🏠</span> Dashboard
-            </Link>
-            <Link href="/upload" className="flex items-center py-3 px-4 text-white/80 no-underline rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer">
-              <span className="mr-3">📤</span> Upload
-            </Link>
-            <Link href="/documents" className="flex items-center py-3 px-4 text-white/80 no-underline rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer">
-              <span className="mr-3">📄</span> Documents
-            </Link>
-            <Link href="/questions" className="flex items-center py-3 px-4 text-white/80 no-underline rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer">
-              <span className="mr-3">❓</span> Questions
-            </Link>
-            <Link href="/highlights" className="flex items-center py-3 px-4 text-white/80 no-underline rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer">
-              <span className="mr-3">✨</span> Highlights
-            </Link>
-            <button
-              onClick={() => {
-                localStorage.clear();
-                router.push("/login");
-              }}
-              className="flex items-center py-3 px-4 text-white/80 rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer w-full text-left bg-none border-none"
-            >
-              <span className="mr-3">🚪</span> Logout
-            </button>
-          </nav>
-        </aside>
-
-        <main className="ml-70 flex-1 p-10 max-w-7xl">
-          <div className="bg-warning-light border border-warning text-warning-dark px-4 py-3 rounded-lg mb-8 flex items-center gap-3">
-            <span className="text-2xl">💡</span>
-            <span>
-              Upload your question pattern PDF or textbook to improve question
-              quality
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-surface p-6 rounded-lg shadow-md border border-border">
-              <div className="text-3xl font-bold text-primary mb-2">{stats.documents}</div>
-              <div className="text-text-light">Documents Uploaded</div>
-            </div>
-            <div className="bg-surface p-6 rounded-lg shadow-md border border-border">
-              <div className="text-3xl font-bold text-primary mb-2">{stats.highlights}</div>
-              <div className="text-text-light">Highlights Generated</div>
-            </div>
-            <div className="bg-surface p-6 rounded-lg shadow-md border border-border">
-              <div className="text-3xl font-bold text-primary mb-2">{stats.questions}</div>
-              <div className="text-text-light">Questions Generated</div>
-            </div>
-          </div>
-
-          <div className="flex justify-between items-center mb-5">
-            <h1 className="text-2xl font-bold text-primary">
-              Your Subjects
-            </h1>
-            <button
-              className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200"
-              onClick={() => setShowModal(true)}
-            >
-              <span>➕</span> Add Subject
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {subjects.map((subject) => {
-              const sid = String(subject._id);
-              const n = docCountBySubject[sid] ?? 0;
-              return (
-                <div key={subject._id} className="bg-surface p-6 rounded-lg shadow-md border border-border hover:shadow-lg transition-shadow duration-200">
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => router.push(`/documents?subjectId=${sid}`)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ")
-                        router.push(`/documents?subjectId=${sid}`);
-                    }}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <div className="text-xl font-semibold text-text mb-1">{subject.name}</div>
-                    {subject.code && (
-                      <div className="text-text-muted mb-3">{subject.code}</div>
-                    )}
-                    <div className="text-text-light text-sm">
-                      <span>
-                        📄 {n} document{n === 1 ? "" : "s"} — open list
-                      </span>
-                    </div>
-                  </div>
-                  <div className="mt-3">
-                    <Link
-                      href={`/subjects/${sid}`}
-                      className="inline-block px-3 py-1.5 bg-primary/10 text-primary rounded-md text-sm no-underline hover:bg-primary/20 transition-colors duration-200"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      Subject page (by type) →
-                    </Link>
-                  </div>
+      <div className="min-h-screen bg-gradient-to-b from-primary to-primary-dark">
+        {/* Navbar */}
+        <nav className="bg-white/10 backdrop-blur-sm py-4">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between h-16">
+              <div className="flex">
+                <div className="flex-shrink-0 flex items-center">
+                  <span className="text-xl font-bold text-white">📚 Study Assistant</span>
                 </div>
-              );
-            })}
-            {subjects.length === 0 && (
-              <div className="bg-surface p-10 rounded-lg shadow-md border border-border text-center col-span-full">
-                <p className="text-text-light mb-5">
-                  No subjects yet. Add your first subject to get started!
-                </p>
-                <button
-                  className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition-colors duration-200"
-                  onClick={() => setShowModal(true)}
-                >
-                  <span>➕</span> Add Subject
-                </button>
               </div>
-            )}
+              <div className="hidden md:flex-1 flex justify-center md:flex md:justify-end items-center">
+                <Link
+                  href="/login"
+                  className="rounded-md px-3 py-2 text-sm font-medium text-white/90 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
+                >
+                  Log in
+                </Link>
+                {/* -- */}
+                <Link
+                  href="/signup"
+                  className="ml-4 rounded-md px-3 py-2 text-sm font-medium text-white bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus-ring-white focus:ring-offset-2"
+                >
+                  Sign up
+                </Link>
+              </div>
+            </div>
           </div>
-        </main>
+        </nav>
+
+        {/* Hero Section */}
+        <div className="relative pt-20 pb-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto grid max-w-xl items-center gap-8 py-24 text-center sm:py-32 lg:grid-cols-2 lg:text-left">
+              <div>
+                <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+                  Transform Your Study Materials<br />
+                  <span className="block bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">
+                    Into Interactive Learning
+                  </span>
+                </h1>
+                <p className="mt-6 text-lg leading-8 text-white/90">
+                  Study Assistant uses AI to convert your PDFs, textbooks, and notes into personalized flashcards, practice questions, and study highlights. Learn smarter, not harder.
+                </p>
+                <div className="mt-10 flex justify-center sm:justify-start space-x-4">
+                  <Link
+                    href="/login"
+                    className="rounded-md bg-white px-5 py-3 text-sm font-medium text-primary-shadow hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  >
+                    Get Started
+                  </Link>
+                  <Link
+                    href="/signup"
+                    className="rounded-md border border-white/20 px-5 py-3 text-sm font-medium text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus-ring-white focus:ring-offset-2"
+                  >
+                    Create Account
+                  </Link>
+                </div>
+              </div>
+              <div className="hidden sm:block sm:max-w-full">
+                {/* Illustration placeholder */}
+                <div className="h-96 w-full bg-gradient-to-br from-primary/20 to-primary-dark/20 rounded-xl flex items-center justify-center">
+                  <div className="text-primary/50 text-6xl">📚</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Features Section */}
+        <section className="relative bg-white/5 backdrop-blur-sm py-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8">
+                How It Works
+              </h2>
+              <p className="max-w-xl mx-auto text-lg leading-8 text-gray-600">
+                Simple steps to turn your study materials into interactive learning resources
+              </p>
+            </div>
+
+            <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {/* Feature 1: Upload */}
+              <div className="text-center">
+                <div className="flex items-center justify-center h-16 w-16 mb-4 bg-primary/10 rounded-lg">
+                  <span className="text-primary text-2xl">📤</span>
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-3">
+                  Upload Your Materials
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Upload PDFs, textbooks, or notes. Our AI processes your content to extract key concepts and information.
+                </p>
+              </div>
+
+              {/* Feature 2: Generate */}
+              <div className="text-center">
+                <div className="flex items-center justify-center h-16 w-16 mb-4 bg-primary/10 rounded-lg">
+                  <span className="text-primary text-2xl">⚡</span>
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-3">
+                  Get AI-Powered Resources
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Instantly generate flashcards, practice questions, and highlights tailored to your content.
+                </p>
+              </div>
+
+              {/* Feature 3: Learn */}
+              <div className="text-center">
+                <div className="flex items-center justify-center h-16 w-16 mb-4 bg-primary/10 rounded-lg">
+                  <span className="text-primary text-2xl">🧠</span>
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-3">
+                  Study Smarter
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Review with spaced repetition, test yourself with generated questions, and track your progress.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Call to Action */}
+        <div className="relative pt-24 pb-32">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">
+                Ready to transform your study routine?
+              </h2>
+              <p className="max-w-xl mx-auto text-lg leading-8 text-gray-600 mb-8">
+                Join thousands of students who are learning more efficiently with AI-powered study tools.
+              </p>
+              <div className="flex justify-center space-x-4">
+                <Link
+                  href="/login"
+                  className="rounded-md bg-primary px-5 py-3 text-sm font-medium text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                >
+                  Log In
+                </Link>
+                <Link
+                  href="/signup"
+                  className="ml-4 rounded-md border border-primary px-5 py-3 text-sm font-medium text-primary hover:bg-primary/50 focus:outline-none focus:ring-2 focus-ring-primary focus:ring-offset-2"
+                >
+                  Sign Up Free
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <footer className="border-t border-gray-200 bg-white/5 backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="flex flex-col sm:flex-sm-row sm:justify-between sm:items-center">
+              <div className="text-sm text-gray-500 mb-4 sm:mb-0">
+                © 2026 Study Assistant. All rights reserved.
+              </div>
+              <div className="flex space-x-4 text-sm text-gray-500">
+                <a href="#" className="hover:text-gray-700 transition-colors duration-200">
+                  Privacy Policy
+                </a>
+                <a href="#" className="ml-4 hover:text-gray-700 transition-colors duration-200">
+                  Terms of Service
+                </a>
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
-
-      {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowModal(false)}>
-          <div className="bg-surface p-6 rounded-lg shadow-lg max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-text">Add New Subject</h3>
-              <button
-                className="text-text-muted hover:text-text text-xl"
-                onClick={() => setShowModal(false)}
-              >
-                &times;
-              </button>
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-text mb-1">Subject Name *</label>
-              <input
-                type="text"
-                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                value={newSubject.name}
-                onChange={(e) =>
-                  setNewSubject({ ...newSubject, name: e.target.value })
-                }
-                placeholder="e.g., Mathematics"
-              />
-            </div>
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-text mb-1">Subject Code (Optional)</label>
-              <input
-                type="text"
-                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                value={newSubject.code}
-                onChange={(e) =>
-                  setNewSubject({ ...newSubject, code: e.target.value })
-                }
-                placeholder="e.g., MATH101"
-              />
-            </div>
-            <div className="flex justify-end gap-3">
-              <button
-                className="px-4 py-2 text-text-muted hover:text-text border border-border rounded-md transition-colors duration-200"
-                onClick={() => setShowModal(false)}
-              >
-                Cancel
-              </button>
-              <button className="px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-md transition-colors duration-200" onClick={handleAddSubject}>
-                Add Subject
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {toast && (
-        <div className={`fixed bottom-4 right-4 px-4 py-2 rounded-lg text-white ${toast.type === 'success' ? 'bg-success' : toast.type === 'error' ? 'bg-error' : 'bg-warning'} shadow-lg z-50`}>
-          {toast.message}
-        </div>
-      )}
     </>
   );
 }

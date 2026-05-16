@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -106,219 +106,366 @@ export default function Dashboard() {
   return (
     <>
       <Head>
-        <title>Study Assistant - Dashboard</title>
-        <meta
-          name="description"
-          content="AI-powered study assistant for students"
-        />
+        <title>Dashboard - Study Assistant</title>
+        <meta name="description" content="AI-powered study assistant dashboard" />
       </Head>
 
       <div className="app-layout">
-        <aside className="sidebar">
-          <h2>📚 Study Assistant</h2>
-          <nav>
-            <Link href="/dashboard" className="nav-item">
-              <span>🏠</span> Dashboard
-            </Link>
-            <Link href="/upload" className="nav-item">
-              <span>📤</span> Upload
-            </Link>
-            <Link href="/documents" className="nav-item">
-              <span>📄</span> Documents
-            </Link>
-            <Link href="/questions" className="nav-item">
-              <span>❓</span> Questions
-            </Link>
-            <Link href="/highlights" className="nav-item">
-              <span>⭐</span> Highlights
-            </Link>
+        {/* Modern Sidebar */}
+        <aside className="sidebar" style={{ background: "linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%)" }}>
+          <h2 style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "1.5rem", fontWeight: "700", marginBottom: "40px", color: "white" }}>
+            <span style={{ fontSize: "2rem" }}>📚</span> Study Assistant
+          </h2>
+          <nav style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            {[
+              { href: "/dashboard", icon: "🏠", label: "Dashboard", active: true },
+              { href: "/upload", icon: "📤", label: "Upload" },
+              { href: "/documents", icon: "📄", label: "Documents" },
+              { href: "/questions", icon: "❓", label: "Questions" },
+              { href: "/highlights", icon: "⭐", label: "Highlights" }
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="nav-item"
+                style={{
+                  padding: "12px 15px",
+                  borderRadius: "8px",
+                  textDecoration: "none",
+                  color: item.active ? "white" : "rgba(255,255,255,0.8)",
+                  background: item.active ? "rgba(255,255,255,0.15)" : "transparent",
+                  transition: "all 0.2s",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px"
+                }}
+              >
+                <span style={{ fontSize: "1.2rem" }}>{item.icon}</span>
+                {item.label}
+              </Link>
+            ))}
             <button
               onClick={() => {
                 localStorage.clear();
                 router.push("/login");
               }}
               className="nav-item"
+              style={{
+                padding: "12px 15px",
+                borderRadius: "8px",
+                textDecoration: "none",
+                color: "rgba(255,255,255,0.8)",
+                background: "transparent",
+                transition: "all 0.2s",
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "1rem",
+                fontWeight: "500",
+                marginTop: "20px"
+              }}
             >
-              <span>🚪</span> Logout
+              <span style={{ fontSize: "1.2rem" }}>🚪</span>
+              Logout
             </button>
           </nav>
         </aside>
 
         <main className="main-content">
-          <div
-            className="card"
-            style={{ display: "flex", alignItems: "center", gap: "12px" }}
-          >
-            <span className="text-2xl">💡</span>
-            <span>
-              Upload your question pattern PDF or textbook to improve question
-              quality
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="card">
-              <div className="card-title">{stats.documents}</div>
-              <div className="text-text-light">Documents Uploaded</div>
-            </div>
-            <div className="card">
-              <div className="card-title">{stats.highlights}</div>
-              <div className="text-text-light">Highlights Generated</div>
-            </div>
-            <div className="card">
-              <div className="card-title">{stats.questions}</div>
-              <div className="text-text-light">Questions Generated</div>
-            </div>
-          </div>
-
-          <div className="flex justify-between items-center mb-5">
-            <h1
-              className="text-2xl font-bold"
-              style={{ color: "var(--primary)" }}
-            >
-              Your Subjects
+          {/* Welcome Section */}
+          <div style={{ marginBottom: "40px" }}>
+            <h1 style={{ fontSize: "2.5rem", fontWeight: "800", color: "var(--text)", marginBottom: "8px" }}>
+              Welcome back! 👋
             </h1>
-            <button
-              className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200"
-              onClick={() => setShowModal(true)}
-            >
-              <span>➕</span> Add Subject
-            </button>
+            <p style={{ fontSize: "1.1rem", color: "var(--text-light)" }}>
+              Here&apos;s your learning progress at a glance.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {subjects.map((subject) => {
-              const sid = String(subject._id);
-              const n = docCountBySubject[sid] ?? 0;
-              return (
-                <div
-                  key={subject._id}
-                  className="bg-surface p-6 rounded-lg shadow-md border border-border hover:shadow-lg transition-shadow duration-200"
-                >
+          {/* Stats Cards */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px", marginBottom: "40px" }}>
+            <div className="stat-card">
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div>
+                  <div className="stat-number">{stats.documents}</div>
+                  <div className="stat-label">Documents Uploaded</div>
+                </div>
+                <div style={{ fontSize: "3rem", opacity: 0.2 }}>📄</div>
+              </div>
+            </div>
+            <div className="stat-card">
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div>
+                  <div className="stat-number">{stats.highlights}</div>
+                  <div className="stat-label">Highlights Generated</div>
+                </div>
+                <div style={{ fontSize: "3rem", opacity: 0.2 }}>⭐</div>
+              </div>
+            </div>
+            <div className="stat-card">
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div>
+                  <div className="stat-number">{stats.questions}</div>
+                  <div className="stat-label">Questions Generated</div>
+                </div>
+                <div style={{ fontSize: "3rem", opacity: 0.2 }}>❓</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Tips Section */}
+          <div style={{ background: "linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(139, 92, 246, 0.1))", borderRadius: "12px", padding: "24px", marginBottom: "40px", border: "1px solid var(--border)" }}>
+            <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
+              <div style={{ fontSize: "2rem" }}>💡</div>
+              <div>
+                <h3 style={{ fontWeight: "700", color: "var(--text)", marginBottom: "8px", fontSize: "1.1rem" }}>Pro Tip</h3>
+                <p style={{ color: "var(--text-light)", lineHeight: "1.6" }}>
+                  Upload your exam question patterns to significantly improve the quality of AI-generated questions. This helps our system learn your exam style better.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Subjects Section */}
+          <div style={{ marginBottom: "40px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
+              <div>
+                <h2 style={{ fontSize: "1.75rem", fontWeight: "800", color: "var(--text)", marginBottom: "4px" }}>Your Subjects</h2>
+                <p style={{ color: "var(--text-light)" }}>Manage and organize your study materials</p>
+              </div>
+              <button
+                onClick={() => setShowModal(true)}
+                className="btn-gradient"
+                style={{ padding: "12px 28px", display: "flex", alignItems: "center", gap: "8px", border: "none", cursor: "pointer", fontWeight: "600" }}
+              >
+                <span style={{ fontSize: "1.2rem" }}>➕</span> Add Subject
+              </button>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "24px" }}>
+              {subjects.map((subject) => {
+                const sid = String(subject._id);
+                const docCount = docCountBySubject[sid] ?? 0;
+                return (
                   <div
-                    role="button"
-                    tabIndex={0}
+                    key={subject._id}
+                    className="feature-card"
+                    style={{ cursor: "pointer", overflow: "hidden" }}
                     onClick={() => router.push(`/documents?subjectId=${sid}`)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ")
-                        router.push(`/documents?subjectId=${sid}`);
-                    }}
-                    style={{ cursor: "pointer" }}
                   >
-                    <div className="text-xl font-semibold text-text mb-1">
-                      {subject.name}
+                    <div style={{ marginBottom: "20px" }}>
+                      <div style={{ fontSize: "2.5rem", marginBottom: "12px" }}>📚</div>
+                      <h3 style={{ fontSize: "1.25rem", fontWeight: "700", color: "var(--text)", marginBottom: "4px" }}>
+                        {subject.name}
+                      </h3>
+                      {subject.code && (
+                        <p style={{ fontSize: "0.9rem", color: "var(--text-light)", fontWeight: "500" }}>
+                          {subject.code}
+                        </p>
+                      )}
                     </div>
-                    {subject.code && (
-                      <div className="text-text-muted mb-3">{subject.code}</div>
-                    )}
-                    <div className="text-text-light text-sm">
-                      <span>
-                        📄 {n} document{n === 1 ? "" : "s"} — open list
-                      </span>
+                    <div style={{ borderTop: "1px solid var(--border)", paddingTop: "16px", marginBottom: "16px", display: "flex", gap: "24px", fontSize: "0.95rem", color: "var(--text-light)" }}>
+                      <div>
+                        <div style={{ fontWeight: "700", color: "var(--primary)" }}>{docCount}</div>
+                        <div>Document{docCount !== 1 ? "s" : ""}</div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="mt-3">
                     <Link
                       href={`/subjects/${sid}`}
-                      className="inline-block px-3 py-1.5 rounded-md text-sm no-underline transition-colors duration-200"
-                      onClick={(e) => e.stopPropagation()}
+                      style={{ display: "inline-block", color: "var(--primary)", textDecoration: "none", fontWeight: "600", fontSize: "0.95rem" }}
                     >
-                      Subject page (by type) →
+                      View by type →
                     </Link>
                   </div>
+                );
+              })}
+              
+              {subjects.length === 0 && (
+                <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "60px 40px", background: "var(--surface)", borderRadius: "12px", border: "2px dashed var(--border)" }}>
+                  <div style={{ fontSize: "3rem", marginBottom: "16px" }}>📚</div>
+                  <h3 style={{ fontWeight: "700", color: "var(--text)", marginBottom: "12px", fontSize: "1.25rem" }}>
+                    No Subjects Yet
+                  </h3>
+                  <p style={{ color: "var(--text-light)", marginBottom: "24px" }}>
+                    Create your first subject to start organizing your study materials
+                  </p>
+                  <button
+                    onClick={() => setShowModal(true)}
+                    className="btn-gradient"
+                    style={{ padding: "12px 28px", border: "none", cursor: "pointer", fontWeight: "600" }}
+                  >
+                    <span style={{ marginRight: "8px" }}>➕</span> Create Subject
+                  </button>
                 </div>
-              );
-            })}
-            {subjects.length === 0 && (
-              <div className="bg-surface p-10 rounded-lg shadow-md border border-border text-center col-span-full">
-                <p className="text-text-light mb-5">
-                  No subjects yet. Add your first subject to get started!
-                </p>
-                <button
-                  className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition-colors duration-200"
-                  onClick={() => setShowModal(true)}
-                >
-                  <span>➕</span> Add Subject
-                </button>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </main>
       </div>
 
+      {/* Modal */}
       {showModal && (
         <div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          style={{
+            position: "fixed",
+            inset: "0",
+            background: "rgba(0,0,0,0.5)",
+            backdropFilter: "blur(4px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: "50",
+            padding: "20px"
+          }}
           onClick={() => setShowModal(false)}
         >
           <div
-            className="bg-surface p-6 rounded-lg shadow-lg max-w-md w-full mx-4"
+            style={{
+              background: "var(--surface)",
+              borderRadius: "12px",
+              boxShadow: "0 25px 50px rgba(0,0,0,0.15)",
+              maxWidth: "500px",
+              width: "100%",
+              padding: "32px",
+              animation: "slideUp 0.3s ease-out"
+            }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-text">
-                Add New Subject
-              </h3>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
+              <h3 style={{ fontSize: "1.5rem", fontWeight: "700", color: "var(--text)" }}>Add New Subject</h3>
               <button
-                className="text-text-muted hover:text-text text-xl"
                 onClick={() => setShowModal(false)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  fontSize: "1.5rem",
+                  cursor: "pointer",
+                  color: "var(--text-light)"
+                }}
               >
-                &times;
+                ✕
               </button>
             </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-text mb-1">
+
+            <div style={{ marginBottom: "20px" }}>
+              <label style={{ display: "block", fontWeight: "600", color: "var(--text)", marginBottom: "8px", fontSize: "0.95rem" }}>
                 Subject Name *
               </label>
               <input
                 type="text"
-                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                style={{
+                  width: "100%",
+                  padding: "12px 16px",
+                  border: "2px solid var(--border)",
+                  borderRadius: "8px",
+                  fontSize: "1rem",
+                  fontFamily: "inherit",
+                  transition: "all 0.2s",
+                  boxSizing: "border-box"
+                }}
                 value={newSubject.name}
-                onChange={(e) =>
-                  setNewSubject({ ...newSubject, name: e.target.value })
-                }
+                onChange={(e) => setNewSubject({ ...newSubject, name: e.target.value })}
                 placeholder="e.g., Mathematics"
+                onFocus={(e) => e.target.style.borderColor = "var(--primary)"}
+                onBlur={(e) => e.target.style.borderColor = "var(--border)"}
               />
             </div>
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-text mb-1">
+
+            <div style={{ marginBottom: "28px" }}>
+              <label style={{ display: "block", fontWeight: "600", color: "var(--text)", marginBottom: "8px", fontSize: "0.95rem" }}>
                 Subject Code (Optional)
               </label>
               <input
                 type="text"
-                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                style={{
+                  width: "100%",
+                  padding: "12px 16px",
+                  border: "2px solid var(--border)",
+                  borderRadius: "8px",
+                  fontSize: "1rem",
+                  fontFamily: "inherit",
+                  transition: "all 0.2s",
+                  boxSizing: "border-box"
+                }}
                 value={newSubject.code}
-                onChange={(e) =>
-                  setNewSubject({ ...newSubject, code: e.target.value })
-                }
+                onChange={(e) => setNewSubject({ ...newSubject, code: e.target.value })}
                 placeholder="e.g., MATH101"
+                onFocus={(e) => e.target.style.borderColor = "var(--primary)"}
+                onBlur={(e) => e.target.style.borderColor = "var(--border)"}
               />
             </div>
-            <div className="flex justify-end gap-3">
+
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px" }}>
               <button
-                className="px-4 py-2 text-text-muted hover:text-text border border-border rounded-md transition-colors duration-200"
                 onClick={() => setShowModal(false)}
+                style={{
+                  padding: "12px 24px",
+                  border: "2px solid var(--border)",
+                  background: "transparent",
+                  color: "var(--text)",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontWeight: "600",
+                  transition: "all 0.2s"
+                }}
               >
                 Cancel
               </button>
               <button
-                className="px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-md transition-colors duration-200"
                 onClick={handleAddSubject}
+                className="btn-gradient"
+                style={{ padding: "12px 24px", border: "none", cursor: "pointer", fontWeight: "600" }}
               >
-                Add Subject
+                Create Subject
               </button>
             </div>
           </div>
         </div>
       )}
 
+      {/* Toast */}
       {toast && (
         <div
-          className={`fixed bottom-4 right-4 px-4 py-2 rounded-lg text-white ${toast.type === "success" ? "bg-success" : toast.type === "error" ? "bg-error" : "bg-warning"} shadow-lg z-50`}
+          style={{
+            position: "fixed",
+            bottom: "24px",
+            right: "24px",
+            padding: "16px 24px",
+            borderRadius: "8px",
+            color: "white",
+            fontWeight: "600",
+            boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
+            animation: "slideIn 0.3s ease-out",
+            background: toast.type === "success" ? "linear-gradient(135deg, var(--success), #059669)" : "linear-gradient(135deg, var(--error), #dc2626)",
+            zIndex: "50"
+          }}
         >
           {toast.message}
         </div>
       )}
+
+      {/* Footer */}
+      <footer style={{ marginTop: "60px", padding: "40px 24px", borderTop: "1px solid var(--border)", background: "#f8fafc", color: "var(--text-light)", textAlign: "center" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          <p style={{ marginBottom: "12px", fontSize: "0.9rem" }}>© 2026 Study Assistant. All rights reserved.</p>
+          <p style={{ fontSize: "0.85rem" }}>
+            Built with <span style={{ color: "var(--error)" }}>❤️</span> by <strong style={{ color: "var(--text)" }}>Prosun Mukherjee</strong> | MERN Stack Developer
+          </p>
+          <div style={{ marginTop: "12px", fontSize: "0.85rem" }}>
+            <a href="mailto:prosunsajal123@gmail.com" style={{ color: "var(--text-light)", textDecoration: "none", marginRight: "16px", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = "var(--primary)"} onMouseLeave={e => e.target.style.color = "var(--text-light)"}>
+              📧 Email
+            </a>
+            <a href="tel:+8801911572117" style={{ color: "var(--text-light)", textDecoration: "none", marginRight: "16px", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = "var(--primary)"} onMouseLeave={e => e.target.style.color = "var(--text-light)"}>
+              📱 Contact
+            </a>
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--text-light)", textDecoration: "none", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = "var(--primary)"} onMouseLeave={e => e.target.style.color = "var(--text-light)"}>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </footer>
     </>
   );
 }

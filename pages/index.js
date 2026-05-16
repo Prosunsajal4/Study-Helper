@@ -25,7 +25,9 @@ export default function Landing() {
             <div className="flex justify-between h-16">
               <div className="flex">
                 <div className="flex-shrink-0 flex items-center">
-                  <span className="text-xl font-bold text-white">📚 Study Assistant</span>
+                  <span className="text-xl font-bold text-white">
+                    📚 Study Assistant
+                  </span>
                 </div>
               </div>
               <div className="hidden md:flex-1 flex justify-center md:flex md:justify-end items-center">
@@ -53,13 +55,16 @@ export default function Landing() {
             <div className="mx-auto grid max-w-xl items-center gap-8 py-24 text-center sm:py-32 lg:grid-cols-2 lg:text-left">
               <div>
                 <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
-                  Transform Your Study Materials<br />
+                  Transform Your Study Materials
+                  <br />
                   <span className="block bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">
                     Into Interactive Learning
                   </span>
                 </h1>
                 <p className="mt-6 text-lg leading-8 text-white/90">
-                  Study Assistant uses AI to convert your PDFs, textbooks, and notes into personalized flashcards, practice questions, and study highlights. Learn smarter, not harder.
+                  Study Assistant uses AI to convert your PDFs, textbooks, and
+                  notes into personalized flashcards, practice questions, and
+                  study highlights. Learn smarter, not harder.
                 </p>
                 <div className="mt-10 flex justify-center sm:justify-start space-x-4">
                   <Link
@@ -94,7 +99,8 @@ export default function Landing() {
                 How It Works
               </h2>
               <p className="max-w-xl mx-auto text-lg leading-8 text-white/90">
-                Simple steps to turn your study materials into interactive learning resources
+                Simple steps to turn your study materials into interactive
+                learning resources
               </p>
             </div>
 
@@ -108,7 +114,8 @@ export default function Landing() {
                   Upload Your Materials
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Upload PDFs, textbooks, or notes. Our AI processes your content to extract key concepts and information.
+                  Upload PDFs, textbooks, or notes. Our AI processes your
+                  content to extract key concepts and information.
                 </p>
               </div>
 
@@ -121,7 +128,8 @@ export default function Landing() {
                   Get AI-Powered Resources
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Instantly generate flashcards, practice questions, and highlights tailored to your content.
+                  Instantly generate flashcards, practice questions, and
+                  highlights tailored to your content.
                 </p>
               </div>
 
@@ -134,7 +142,8 @@ export default function Landing() {
                   Study Smarter
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Review with spaced repetition, test yourself with generated questions, and track your progress.
+                  Review with spaced repetition, test yourself with generated
+                  questions, and track your progress.
                 </p>
               </div>
             </div>
@@ -149,7 +158,8 @@ export default function Landing() {
                 Ready to transform your study routine?
               </h2>
               <p className="max-w-xl mx-auto text-lg leading-8 text-white/90 mb-8">
-                Join thousands of students who are learning more efficiently with AI-powered study tools.
+                Join thousands of students who are learning more efficiently
+                with AI-powered study tools.
               </p>
               <div className="flex justify-center space-x-4">
                 <Link
@@ -177,10 +187,16 @@ export default function Landing() {
                 © 2026 Study Assistant. All rights reserved.
               </div>
               <div className="flex space-x-4 text-sm text-gray-500">
-                <a href="#" className="hover:text-gray-700 transition-colors duration-200">
+                <a
+                  href="#"
+                  className="hover:text-gray-700 transition-colors duration-200"
+                >
                   Privacy Policy
                 </a>
-                <a href="#" className="ml-4 hover:text-gray-700 transition-colors duration-200">
+                <a
+                  href="#"
+                  className="ml-4 hover:text-gray-700 transition-colors duration-200"
+                >
                   Terms of Service
                 </a>
               </div>

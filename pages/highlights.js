@@ -87,23 +87,23 @@ export default function HighlightsBrowser() {
       <div className="app-layout">
         <aside className="sidebar">
           <h2 style={{ marginBottom: "30px", fontSize: "1.5rem" }}>
-            ðŸ“š Study Assistant
+            📚 Study Assistant
           </h2>
           <nav>
             <Link href="/dashboard" className="nav-item">
-              <span>ðŸ </span> Dashboard
+              <span>🏠</span> Dashboard
             </Link>
             <Link href="/upload" className="nav-item">
-              <span>ðŸ“¤</span> Upload
+              <span>📤</span> Upload
             </Link>
             <Link href="/documents" className="nav-item">
-              <span>ðŸ“„</span> Documents
+              <span>📄</span> Documents
             </Link>
             <Link href="/questions" className="nav-item">
-              <span>â“</span> Questions
+              <span>✔</span> Questions
             </Link>
             <Link href="/highlights" className="nav-item">
-              <span>âœ¨</span> Highlights
+              <span>⭐</span> Highlights
             </Link>
             <button
               onClick={() => {
@@ -122,7 +122,7 @@ export default function HighlightsBrowser() {
                 marginTop: "20px",
               }}
             >
-              <span>ðŸšª</span> Logout
+              <span>🚪</span> Logout
             </button>
           </nav>
         </aside>
@@ -197,7 +197,7 @@ export default function HighlightsBrowser() {
                       fontSize: "0.9rem",
                     }}
                   >
-                    <strong>{getSubjectName(highlightSet.subjectId)}</strong> â€¢
+                    <strong>{getSubjectName(highlightSet.subjectId)}</strong> •
                     Generated:{" "}
                     {new Date(highlightSet.generatedAt).toLocaleDateString()}
                   </div>

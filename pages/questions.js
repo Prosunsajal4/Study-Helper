@@ -136,23 +136,23 @@ export default function QuestionsBrowser() {
       <div className="app-layout">
         <aside className="sidebar">
           <h2 style={{ marginBottom: "30px", fontSize: "1.5rem" }}>
-            ðŸ“š Study Assistant
+            📚 Study Assistant
           </h2>
           <nav>
             <Link href="/dashboard" className="nav-item">
-              <span>ðŸ </span> Dashboard
+              <span>🏠</span> Dashboard
             </Link>
             <Link href="/upload" className="nav-item">
-              <span>ðŸ“¤</span> Upload
+              <span>📤</span> Upload
             </Link>
             <Link href="/documents" className="nav-item">
-              <span>ðŸ“„</span> Documents
+              <span>📄</span> Documents
             </Link>
             <Link href="/questions" className="nav-item">
-              <span>â“</span> Questions
+              <span>✔</span> Questions
             </Link>
             <Link href="/highlights" className="nav-item">
-              <span>âœ¨</span> Highlights
+              <span>⭐</span> Highlights
             </Link>
             <button
               onClick={() => {
@@ -171,7 +171,7 @@ export default function QuestionsBrowser() {
                 marginTop: "20px",
               }}
             >
-              <span>ðŸšª</span> Logout
+              <span>🚪</span> Logout
             </button>
           </nav>
         </aside>
@@ -188,7 +188,7 @@ export default function QuestionsBrowser() {
           </h1>
 
           <div className="prompt-banner">
-            <span className="prompt-banner-icon">ðŸ“‹</span>
+            <span className="prompt-banner-icon">🔎</span>
             <span>
               For best results, upload your previous year question papers first
             </span>
@@ -293,7 +293,7 @@ export default function QuestionsBrowser() {
                           fontSize: "0.9rem",
                         }}
                       >
-                        {getSubjectName(questionSet.subjectId)} â€¢{" "}
+                        {getSubjectName(questionSet.subjectId)} •{" "}
                         {new Date(questionSet.generatedAt).toLocaleDateString()}
                       </p>
                     </div>
@@ -321,7 +321,7 @@ export default function QuestionsBrowser() {
                           )
                         }
                       >
-                        {expandedCard === questionSet._id ? "â–¼" : "â–¶"}
+                        {expandedCard === questionSet._id ? "▼" : "▶"}
                       </button>
                     </div>
                   </div>

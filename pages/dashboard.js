@@ -115,9 +115,7 @@ export default function Dashboard() {
 
       <div className="app-layout">
         <aside className="sidebar">
-          <h2>
-            📚 Study Assistant
-          </h2>
+          <h2>📚 Study Assistant</h2>
           <nav>
             <Link href="/dashboard" className="nav-item">
               <span>🏠</span> Dashboard
@@ -147,7 +145,10 @@ export default function Dashboard() {
         </aside>
 
         <main className="main-content">
-          <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div
+            className="card"
+            style={{ display: "flex", alignItems: "center", gap: "12px" }}
+          >
             <span className="text-2xl">💡</span>
             <span>
               Upload your question pattern PDF or textbook to improve question
@@ -171,14 +172,17 @@ export default function Dashboard() {
           </div>
 
           <div className="flex justify-between items-center mb-5">
-            <h1 className="text-2xl font-bold" style={{ color: 'var(--primary)' }}>
+            <h1
+              className="text-2xl font-bold"
+              style={{ color: "var(--primary)" }}
+            >
               Your Subjects
             </h1>
             <button
               className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200"
               onClick={() => setShowModal(true)}
             >
-              <span>âž•</span> Add Subject
+                <span>➕</span> Add Subject
             </button>
           </div>
 
@@ -187,7 +191,10 @@ export default function Dashboard() {
               const sid = String(subject._id);
               const n = docCountBySubject[sid] ?? 0;
               return (
-                <div key={subject._id} className="bg-surface p-6 rounded-lg shadow-md border border-border hover:shadow-lg transition-shadow duration-200">
+                <div
+                  key={subject._id}
+                  className="bg-surface p-6 rounded-lg shadow-md border border-border hover:shadow-lg transition-shadow duration-200"
+                >
                   <div
                     role="button"
                     tabIndex={0}
@@ -198,7 +205,9 @@ export default function Dashboard() {
                     }}
                     style={{ cursor: "pointer" }}
                   >
-                    <div className="text-xl font-semibold text-text mb-1">{subject.name}</div>
+                    <div className="text-xl font-semibold text-text mb-1">
+                      {subject.name}
+                    </div>
                     {subject.code && (
                       <div className="text-text-muted mb-3">{subject.code}</div>
                     )}
@@ -229,7 +238,7 @@ export default function Dashboard() {
                   className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition-colors duration-200"
                   onClick={() => setShowModal(true)}
                 >
-                  <span>âž•</span> Add Subject
+                    <span>➕</span> Add Subject
                 </button>
               </div>
             )}
@@ -238,10 +247,18 @@ export default function Dashboard() {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowModal(false)}>
-          <div className="bg-surface p-6 rounded-lg shadow-lg max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            className="bg-surface p-6 rounded-lg shadow-lg max-w-md w-full mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-text">Add New Subject</h3>
+              <h3 className="text-lg font-semibold text-text">
+                Add New Subject
+              </h3>
               <button
                 className="text-text-muted hover:text-text text-xl"
                 onClick={() => setShowModal(false)}
@@ -250,7 +267,9 @@ export default function Dashboard() {
               </button>
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-text mb-1">Subject Name *</label>
+              <label className="block text-sm font-medium text-text mb-1">
+                Subject Name *
+              </label>
               <input
                 type="text"
                 className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
@@ -262,7 +281,9 @@ export default function Dashboard() {
               />
             </div>
             <div className="mb-6">
-              <label className="block text-sm font-medium text-text mb-1">Subject Code (Optional)</label>
+              <label className="block text-sm font-medium text-text mb-1">
+                Subject Code (Optional)
+              </label>
               <input
                 type="text"
                 className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
@@ -280,7 +301,10 @@ export default function Dashboard() {
               >
                 Cancel
               </button>
-              <button className="px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-md transition-colors duration-200" onClick={handleAddSubject}>
+              <button
+                className="px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-md transition-colors duration-200"
+                onClick={handleAddSubject}
+              >
                 Add Subject
               </button>
             </div>
@@ -289,7 +313,9 @@ export default function Dashboard() {
       )}
 
       {toast && (
-        <div className={`fixed bottom-4 right-4 px-4 py-2 rounded-lg text-white ${toast.type === 'success' ? 'bg-success' : toast.type === 'error' ? 'bg-error' : 'bg-warning'} shadow-lg z-50`}>
+        <div
+          className={`fixed bottom-4 right-4 px-4 py-2 rounded-lg text-white ${toast.type === "success" ? "bg-success" : toast.type === "error" ? "bg-error" : "bg-warning"} shadow-lg z-50`}
+        >
           {toast.message}
         </div>
       )}

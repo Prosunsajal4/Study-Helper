@@ -168,23 +168,23 @@ export default function Upload() {
       <div className="app-layout">
         <aside className="sidebar">
           <h2 style={{ marginBottom: "30px", fontSize: "1.5rem" }}>
-            ðŸ“š Study Assistant
+            📚 Study Assistant
           </h2>
           <nav>
             <Link href="/dashboard" className="nav-item">
-              <span>ðŸ </span> Dashboard
+              <span>🏠</span> Dashboard
             </Link>
             <Link href="/upload" className="nav-item">
-              <span>ðŸ“¤</span> Upload
+              <span>📤</span> Upload
             </Link>
             <Link href="/documents" className="nav-item">
-              <span>ðŸ“„</span> Documents
+              <span>📄</span> Documents
             </Link>
             <Link href="/questions" className="nav-item">
-              <span>â“</span> Questions
+              <span>✔</span> Questions
             </Link>
             <Link href="/highlights" className="nav-item">
-              <span>âœ¨</span> Highlights
+              <span>⭐</span> Highlights
             </Link>
             <button
               onClick={() => {
@@ -203,7 +203,7 @@ export default function Upload() {
                 marginTop: "20px",
               }}
             >
-              <span>ðŸšª</span> Logout
+              <span>🚪</span> Logout
             </button>
           </nav>
         </aside>
@@ -221,7 +221,7 @@ export default function Upload() {
 
           {!hasQuestionPattern && uploadData.subjectId && step === 2 && (
             <div className="prompt-banner">
-              <span className="prompt-banner-icon">ðŸ’¡</span>
+              <span className="prompt-banner-icon">💡</span>
               <span>
                 Upload your question pattern PDF to get exam-targeted questions
               </span>
@@ -315,7 +315,7 @@ export default function Upload() {
                     onClick={() => setStep(2)}
                     disabled={!uploadData.subjectId}
                   >
-                    Next â†’
+                    Next →
                   </button>
                 </div>
               </div>
@@ -350,13 +350,13 @@ export default function Upload() {
                     className="btn btn-secondary"
                     onClick={() => setStep(1)}
                   >
-                    â† Back
+                    ← Back
                   </button>
                   <button
                     className="btn btn-primary"
                     onClick={() => setStep(3)}
                   >
-                    Next â†’
+                    Next →
                   </button>
                 </div>
               </div>
@@ -397,7 +397,7 @@ export default function Upload() {
                     onClick={() => setStep(2)}
                     disabled={loading}
                   >
-                    â† Back
+                    ← Back
                   </button>
                   <button
                     className="btn btn-primary"
@@ -417,7 +417,7 @@ export default function Upload() {
                         Uploading...
                       </>
                     ) : (
-                      "Upload â†’"
+                      "Upload →"
                     )}
                   </button>
                 </div>
@@ -436,8 +436,8 @@ export default function Upload() {
                     borderRadius: "8px",
                   }}
                 >
-                  <h3 style={{ marginBottom: "10px", color: "var(--success)" }}>
-                    âœ“ Document uploaded successfully
+                    <h3 style={{ marginBottom: "10px", color: "var(--success)" }}>
+                    ✓ Document uploaded successfully
                   </h3>
                   <p style={{ marginBottom: "10px" }}>
                     <strong>Extracted Text Preview:</strong>

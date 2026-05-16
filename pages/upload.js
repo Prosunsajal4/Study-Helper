@@ -436,7 +436,7 @@ export default function Upload() {
                     borderRadius: "8px",
                   }}
                 >
-                    <h3 style={{ marginBottom: "10px", color: "var(--success)" }}>
+                  <h3 style={{ marginBottom: "10px", color: "var(--success)" }}>
                     ✓ Document uploaded successfully
                   </h3>
                   <p style={{ marginBottom: "10px" }}>

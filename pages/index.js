@@ -18,7 +18,7 @@ export default function Landing() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-b from-primary to-primary-dark">
+      <div className="min-h-screen bg-gradient-primary">
         {/* Navbar */}
         <nav className="bg-white/10 backdrop-blur-sm py-4">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -57,7 +57,7 @@ export default function Landing() {
                 <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
                   Transform Your Study Materials
                   <br />
-                  <span className="block bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">
+                  <span className="block text-gradient-primary">
                     Into Interactive Learning
                   </span>
                 </h1>
@@ -83,7 +83,7 @@ export default function Landing() {
               </div>
               <div className="hidden sm:block sm:max-w-full">
                 {/* Illustration placeholder */}
-                <div className="h-96 w-full bg-gradient-to-br from-primary/20 to-primary-dark/20 rounded-xl flex items-center justify-center">
+                <div className="h-96 w-full bg-gradient-primary-br-opacity rounded-xl flex items-center justify-center">
                   <div className="text-primary/50 text-6xl">📚</div>
                 </div>
               </div>

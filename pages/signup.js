@@ -28,7 +28,7 @@ export default function Signup() {
       if (res.ok) {
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("userId", data.user._id);
-        router.push("/");
+        router.push("/dashboard");
       } else {
         setError(data.error || "Signup failed");
       }

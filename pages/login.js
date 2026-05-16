@@ -27,7 +27,7 @@ export default function Login() {
       if (res.ok) {
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("userId", data.user._id);
-        router.push("/");
+        router.push("/dashboard");
       } else {
         setError(data.error || "Login failed");
       }
@@ -117,7 +117,7 @@ export default function Login() {
           </form>
 
           <p style={{ marginTop: "20px", textAlign: "center", color: "var(--text-light)" }}>
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/signup" style={{ color: "var(--primary)" }}>
               Sign up
             </Link>

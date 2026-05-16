@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -68,9 +68,13 @@ export default function Upload() {
     }
 
     try {
+      const userId = localStorage.getItem("userId");
       const res = await fetch("/api/subjects", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": userId,
+        },
         body: JSON.stringify({
           name: uploadData.newSubjectName,
           code: uploadData.newSubjectCode,
@@ -164,23 +168,23 @@ export default function Upload() {
       <div className="app-layout">
         <aside className="sidebar">
           <h2 style={{ marginBottom: "30px", fontSize: "1.5rem" }}>
-            📚 Study Assistant
+            ðŸ“š Study Assistant
           </h2>
           <nav>
-            <Link href="/" className="nav-item">
-              <span>🏠</span> Dashboard
+            <Link href="/dashboard" className="nav-item">
+              <span>ðŸ </span> Dashboard
             </Link>
             <Link href="/upload" className="nav-item">
-              <span>📤</span> Upload
+              <span>ðŸ“¤</span> Upload
             </Link>
             <Link href="/documents" className="nav-item">
-              <span>📄</span> Documents
+              <span>ðŸ“„</span> Documents
             </Link>
             <Link href="/questions" className="nav-item">
-              <span>❓</span> Questions
+              <span>â“</span> Questions
             </Link>
             <Link href="/highlights" className="nav-item">
-              <span>✨</span> Highlights
+              <span>âœ¨</span> Highlights
             </Link>
             <button
               onClick={() => {
@@ -199,7 +203,7 @@ export default function Upload() {
                 marginTop: "20px",
               }}
             >
-              <span>🚪</span> Logout
+              <span>ðŸšª</span> Logout
             </button>
           </nav>
         </aside>
@@ -217,7 +221,7 @@ export default function Upload() {
 
           {!hasQuestionPattern && uploadData.subjectId && step === 2 && (
             <div className="prompt-banner">
-              <span className="prompt-banner-icon">💡</span>
+              <span className="prompt-banner-icon">ðŸ’¡</span>
               <span>
                 Upload your question pattern PDF to get exam-targeted questions
               </span>
@@ -311,7 +315,7 @@ export default function Upload() {
                     onClick={() => setStep(2)}
                     disabled={!uploadData.subjectId}
                   >
-                    Next →
+                    Next â†’
                   </button>
                 </div>
               </div>
@@ -346,13 +350,13 @@ export default function Upload() {
                     className="btn btn-secondary"
                     onClick={() => setStep(1)}
                   >
-                    ← Back
+                    â† Back
                   </button>
                   <button
                     className="btn btn-primary"
                     onClick={() => setStep(3)}
                   >
-                    Next →
+                    Next â†’
                   </button>
                 </div>
               </div>
@@ -393,7 +397,7 @@ export default function Upload() {
                     onClick={() => setStep(2)}
                     disabled={loading}
                   >
-                    ← Back
+                    â† Back
                   </button>
                   <button
                     className="btn btn-primary"
@@ -413,7 +417,7 @@ export default function Upload() {
                         Uploading...
                       </>
                     ) : (
-                      "Upload →"
+                      "Upload â†’"
                     )}
                   </button>
                 </div>
@@ -433,7 +437,7 @@ export default function Upload() {
                   }}
                 >
                   <h3 style={{ marginBottom: "10px", color: "var(--success)" }}>
-                    ✓ Document uploaded successfully
+                    âœ“ Document uploaded successfully
                   </h3>
                   <p style={{ marginBottom: "10px" }}>
                     <strong>Extracted Text Preview:</strong>

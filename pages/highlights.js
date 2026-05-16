@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -87,23 +87,23 @@ export default function HighlightsBrowser() {
       <div className="app-layout">
         <aside className="sidebar">
           <h2 style={{ marginBottom: "30px", fontSize: "1.5rem" }}>
-            📚 Study Assistant
+            ðŸ“š Study Assistant
           </h2>
           <nav>
-            <Link href="/" className="nav-item">
-              <span>🏠</span> Dashboard
+            <Link href="/dashboard" className="nav-item">
+              <span>ðŸ </span> Dashboard
             </Link>
             <Link href="/upload" className="nav-item">
-              <span>📤</span> Upload
+              <span>ðŸ“¤</span> Upload
             </Link>
             <Link href="/documents" className="nav-item">
-              <span>📄</span> Documents
+              <span>ðŸ“„</span> Documents
             </Link>
             <Link href="/questions" className="nav-item">
-              <span>❓</span> Questions
+              <span>â“</span> Questions
             </Link>
             <Link href="/highlights" className="nav-item">
-              <span>✨</span> Highlights
+              <span>âœ¨</span> Highlights
             </Link>
             <button
               onClick={() => {
@@ -122,7 +122,7 @@ export default function HighlightsBrowser() {
                 marginTop: "20px",
               }}
             >
-              <span>🚪</span> Logout
+              <span>ðŸšª</span> Logout
             </button>
           </nav>
         </aside>
@@ -197,7 +197,7 @@ export default function HighlightsBrowser() {
                       fontSize: "0.9rem",
                     }}
                   >
-                    <strong>{getSubjectName(highlightSet.subjectId)}</strong> •
+                    <strong>{getSubjectName(highlightSet.subjectId)}</strong> â€¢
                     Generated:{" "}
                     {new Date(highlightSet.generatedAt).toLocaleDateString()}
                   </div>

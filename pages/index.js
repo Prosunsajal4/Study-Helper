@@ -1,4 +1,4 @@
-import Head from "next/head";
+﻿import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -90,10 +90,10 @@ export default function Landing() {
         <section className="relative bg-white/5 backdrop-blur-sm py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
-              <h2 className="text-3xl font-bold text-gray-900 mb-8">
+              <h2 className="text-3xl font-bold text-white mb-8">
                 How It Works
               </h2>
-              <p className="max-w-xl mx-auto text-lg leading-8 text-gray-600">
+              <p className="max-w-xl mx-auto text-lg leading-8 text-white/90">
                 Simple steps to turn your study materials into interactive learning resources
               </p>
             </div>
@@ -145,10 +145,10 @@ export default function Landing() {
         <div className="relative pt-24 pb-32">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">
+              <h2 className="text-3xl font-bold text-white mb-6">
                 Ready to transform your study routine?
               </h2>
-              <p className="max-w-xl mx-auto text-lg leading-8 text-gray-600 mb-8">
+              <p className="max-w-xl mx-auto text-lg leading-8 text-white/90 mb-8">
                 Join thousands of students who are learning more efficiently with AI-powered study tools.
               </p>
               <div className="flex justify-center space-x-4">

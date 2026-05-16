@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -24,7 +24,7 @@ export default function Dashboard() {
     if (typeof window !== "undefined") {
       const userId = localStorage.getItem("userId");
       if (!userId) {
-        router.push("/");
+        router.push("/login");
         return;
       }
     }
@@ -113,41 +113,41 @@ export default function Dashboard() {
         />
       </Head>
 
-      <div className="flex min-h-screen">
-        <aside className="w-70 bg-gradient-to-b from-primary to-primary-dark text-white p-6 fixed h-screen overflow-y-auto shadow-lg">
-          <h2 className="text-xl font-bold mb-8 flex items-center gap-3">
+      <div className="app-layout">
+        <aside className="sidebar">
+          <h2>
             📚 Study Assistant
           </h2>
           <nav>
-            <Link href="/" className="flex items-center py-3 px-4 text-white/80 no-underline rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer">
-              <span className="mr-3">🏠</span> Dashboard
+            <Link href="/dashboard" className="nav-item">
+              <span>🏠</span> Dashboard
             </Link>
-            <Link href="/upload" className="flex items-center py-3 px-4 text-white/80 no-underline rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer">
-              <span className="mr-3">📤</span> Upload
+            <Link href="/upload" className="nav-item">
+              <span>📤</span> Upload
             </Link>
-            <Link href="/documents" className="flex items-center py-3 px-4 text-white/80 no-underline rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer">
-              <span className="mr-3">📄</span> Documents
+            <Link href="/documents" className="nav-item">
+              <span>📄</span> Documents
             </Link>
-            <Link href="/questions" className="flex items-center py-3 px-4 text-white/80 no-underline rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer">
-              <span className="mr-3">❓</span> Questions
+            <Link href="/questions" className="nav-item">
+              <span>❓</span> Questions
             </Link>
-            <Link href="/highlights" className="flex items-center py-3 px-4 text-white/80 no-underline rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer">
-              <span className="mr-3">✨</span> Highlights
+            <Link href="/highlights" className="nav-item">
+              <span>⭐</span> Highlights
             </Link>
             <button
               onClick={() => {
                 localStorage.clear();
                 router.push("/login");
               }}
-              className="flex items-center py-3 px-4 text-white/80 rounded-lg mb-1 transition-all duration-200 hover:bg-white/10 cursor-pointer w-full text-left bg-none border-none"
+              className="nav-item"
             >
-              <span className="mr-3">🚪</span> Logout
+              <span>🚪</span> Logout
             </button>
           </nav>
         </aside>
 
-        <main className="ml-70 flex-1 p-10 max-w-7xl">
-          <div className="bg-warning-light border border-warning text-warning-dark px-4 py-3 rounded-lg mb-8 flex items-center gap-3">
+        <main className="main-content">
+          <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span className="text-2xl">💡</span>
             <span>
               Upload your question pattern PDF or textbook to improve question
@@ -156,29 +156,29 @@ export default function Dashboard() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-surface p-6 rounded-lg shadow-md border border-border">
-              <div className="text-3xl font-bold text-primary mb-2">{stats.documents}</div>
+            <div className="card">
+              <div className="card-title">{stats.documents}</div>
               <div className="text-text-light">Documents Uploaded</div>
             </div>
-            <div className="bg-surface p-6 rounded-lg shadow-md border border-border">
-              <div className="text-3xl font-bold text-primary mb-2">{stats.highlights}</div>
+            <div className="card">
+              <div className="card-title">{stats.highlights}</div>
               <div className="text-text-light">Highlights Generated</div>
             </div>
-            <div className="bg-surface p-6 rounded-lg shadow-md border border-border">
-              <div className="text-3xl font-bold text-primary mb-2">{stats.questions}</div>
+            <div className="card">
+              <div className="card-title">{stats.questions}</div>
               <div className="text-text-light">Questions Generated</div>
             </div>
           </div>
 
           <div className="flex justify-between items-center mb-5">
-            <h1 className="text-2xl font-bold text-primary">
+            <h1 className="text-2xl font-bold" style={{ color: 'var(--primary)' }}>
               Your Subjects
             </h1>
             <button
               className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200"
               onClick={() => setShowModal(true)}
             >
-              <span>➕</span> Add Subject
+              <span>âž•</span> Add Subject
             </button>
           </div>
 
@@ -211,7 +211,7 @@ export default function Dashboard() {
                   <div className="mt-3">
                     <Link
                       href={`/subjects/${sid}`}
-                      className="inline-block px-3 py-1.5 bg-primary/10 text-primary rounded-md text-sm no-underline hover:bg-primary/20 transition-colors duration-200"
+                      className="inline-block px-3 py-1.5 rounded-md text-sm no-underline transition-colors duration-200"
                       onClick={(e) => e.stopPropagation()}
                     >
                       Subject page (by type) →
@@ -229,7 +229,7 @@ export default function Dashboard() {
                   className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition-colors duration-200"
                   onClick={() => setShowModal(true)}
                 >
-                  <span>➕</span> Add Subject
+                  <span>âž•</span> Add Subject
                 </button>
               </div>
             )}

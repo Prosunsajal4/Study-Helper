@@ -39,13 +39,13 @@ export default async function handler(req, res) {
     } else if (req.method === "POST") {
       const { name, code } = req.body;
 
-      if (!name || !code) {
-        return res.status(400).json({ error: "Name and code are required" });
+      if (!name) {
+        return res.status(400).json({ error: "Name is required" });
       }
 
       const subject = {
         name,
-        code,
+        code: code || "",
         userId: new ObjectId(userId),
         createdAt: new Date(),
       };

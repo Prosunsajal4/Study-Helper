@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -158,9 +158,13 @@ export default function AllDocuments() {
 
   const generateHighlights = async (documentId) => {
     try {
+      const userId = localStorage.getItem("userId");
       const res = await fetch("/api/highlights/generate", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": userId,
+        },
         body: JSON.stringify({ documentId }),
       });
 
@@ -176,9 +180,13 @@ export default function AllDocuments() {
 
   const generateQuestions = async (documentId, examType) => {
     try {
+      const userId = localStorage.getItem("userId");
       const res = await fetch("/api/questions/generate", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": userId,
+        },
         body: JSON.stringify({ documentId, examType }),
       });
 
@@ -201,23 +209,23 @@ export default function AllDocuments() {
       <div className="app-layout">
         <aside className="sidebar">
           <h2 style={{ marginBottom: "30px", fontSize: "1.5rem" }}>
-            📚 Study Assistant
+            ðŸ“š Study Assistant
           </h2>
           <nav>
-            <Link href="/" className="nav-item">
-              <span>🏠</span> Dashboard
+            <Link href="/dashboard" className="nav-item">
+              <span>ðŸ </span> Dashboard
             </Link>
             <Link href="/upload" className="nav-item">
-              <span>📤</span> Upload
+              <span>ðŸ“¤</span> Upload
             </Link>
             <Link href="/documents" className="nav-item">
-              <span>📄</span> Documents
+              <span>ðŸ“„</span> Documents
             </Link>
             <Link href="/questions" className="nav-item">
-              <span>❓</span> Questions
+              <span>â“</span> Questions
             </Link>
             <Link href="/highlights" className="nav-item">
-              <span>✨</span> Highlights
+              <span>âœ¨</span> Highlights
             </Link>
             <button
               onClick={() => {
@@ -236,7 +244,7 @@ export default function AllDocuments() {
                 marginTop: "20px",
               }}
             >
-              <span>🚪</span> Logout
+              <span>ðŸšª</span> Logout
             </button>
           </nav>
         </aside>

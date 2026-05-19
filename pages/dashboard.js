@@ -107,22 +107,46 @@ export default function Dashboard() {
     <>
       <Head>
         <title>Dashboard - Study Assistant</title>
-        <meta name="description" content="AI-powered study assistant dashboard" />
+        <meta
+          name="description"
+          content="AI-powered study assistant dashboard"
+        />
       </Head>
 
       <div className="app-layout">
         {/* Modern Sidebar */}
-        <aside className="sidebar" style={{ background: "linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%)" }}>
-          <h2 style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "1.5rem", fontWeight: "700", marginBottom: "40px", color: "white" }}>
+        <aside
+          className="sidebar"
+          style={{
+            background:
+              "linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%)",
+          }}
+        >
+          <h2
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              fontSize: "1.5rem",
+              fontWeight: "700",
+              marginBottom: "40px",
+              color: "white",
+            }}
+          >
             <span style={{ fontSize: "2rem" }}>📚</span> Study Assistant
           </h2>
           <nav style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {[
-              { href: "/dashboard", icon: "🏠", label: "Dashboard", active: true },
+              {
+                href: "/dashboard",
+                icon: "🏠",
+                label: "Dashboard",
+                active: true,
+              },
               { href: "/upload", icon: "📤", label: "Upload" },
               { href: "/documents", icon: "📄", label: "Documents" },
               { href: "/questions", icon: "❓", label: "Questions" },
-              { href: "/highlights", icon: "⭐", label: "Highlights" }
+              { href: "/highlights", icon: "⭐", label: "Highlights" },
             ].map((item) => (
               <Link
                 key={item.href}
@@ -133,11 +157,13 @@ export default function Dashboard() {
                   borderRadius: "8px",
                   textDecoration: "none",
                   color: item.active ? "white" : "rgba(255,255,255,0.8)",
-                  background: item.active ? "rgba(255,255,255,0.15)" : "transparent",
+                  background: item.active
+                    ? "rgba(255,255,255,0.15)"
+                    : "transparent",
                   transition: "all 0.2s",
                   display: "flex",
                   alignItems: "center",
-                  gap: "10px"
+                  gap: "10px",
                 }}
               >
                 <span style={{ fontSize: "1.2rem" }}>{item.icon}</span>
@@ -164,7 +190,7 @@ export default function Dashboard() {
                 cursor: "pointer",
                 fontSize: "1rem",
                 fontWeight: "500",
-                marginTop: "20px"
+                marginTop: "20px",
               }}
             >
               <span style={{ fontSize: "1.2rem" }}>🚪</span>
@@ -176,7 +202,14 @@ export default function Dashboard() {
         <main className="main-content">
           {/* Welcome Section */}
           <div style={{ marginBottom: "40px" }}>
-            <h1 style={{ fontSize: "2.5rem", fontWeight: "800", color: "var(--text)", marginBottom: "8px" }}>
+            <h1
+              style={{
+                fontSize: "2.5rem",
+                fontWeight: "800",
+                color: "var(--text)",
+                marginBottom: "8px",
+              }}
+            >
               Welcome back! 👋
             </h1>
             <p style={{ fontSize: "1.1rem", color: "var(--text-light)" }}>
@@ -185,9 +218,22 @@ export default function Dashboard() {
           </div>
 
           {/* Stats Cards */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px", marginBottom: "40px" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: "24px",
+              marginBottom: "40px",
+            }}
+          >
             <div className="stat-card">
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                }}
+              >
                 <div>
                   <div className="stat-number">{stats.documents}</div>
                   <div className="stat-label">Documents Uploaded</div>
@@ -196,7 +242,13 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="stat-card">
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                }}
+              >
                 <div>
                   <div className="stat-number">{stats.highlights}</div>
                   <div className="stat-label">Highlights Generated</div>
@@ -205,7 +257,13 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="stat-card">
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                }}
+              >
                 <div>
                   <div className="stat-number">{stats.questions}</div>
                   <div className="stat-label">Questions Generated</div>
@@ -216,13 +274,35 @@ export default function Dashboard() {
           </div>
 
           {/* Quick Tips Section */}
-          <div style={{ background: "linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(139, 92, 246, 0.1))", borderRadius: "12px", padding: "24px", marginBottom: "40px", border: "1px solid var(--border)" }}>
-            <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
+          <div
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(139, 92, 246, 0.1))",
+              borderRadius: "12px",
+              padding: "24px",
+              marginBottom: "40px",
+              border: "1px solid var(--border)",
+            }}
+          >
+            <div
+              style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}
+            >
               <div style={{ fontSize: "2rem" }}>💡</div>
               <div>
-                <h3 style={{ fontWeight: "700", color: "var(--text)", marginBottom: "8px", fontSize: "1.1rem" }}>Pro Tip</h3>
+                <h3
+                  style={{
+                    fontWeight: "700",
+                    color: "var(--text)",
+                    marginBottom: "8px",
+                    fontSize: "1.1rem",
+                  }}
+                >
+                  Pro Tip
+                </h3>
                 <p style={{ color: "var(--text-light)", lineHeight: "1.6" }}>
-                  Upload your exam question patterns to significantly improve the quality of AI-generated questions. This helps our system learn your exam style better.
+                  Upload your exam question patterns to significantly improve
+                  the quality of AI-generated questions. This helps our system
+                  learn your exam style better.
                 </p>
               </div>
             </div>
@@ -230,21 +310,53 @@ export default function Dashboard() {
 
           {/* Subjects Section */}
           <div style={{ marginBottom: "40px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "24px",
+              }}
+            >
               <div>
-                <h2 style={{ fontSize: "1.75rem", fontWeight: "800", color: "var(--text)", marginBottom: "4px" }}>Your Subjects</h2>
-                <p style={{ color: "var(--text-light)" }}>Manage and organize your study materials</p>
+                <h2
+                  style={{
+                    fontSize: "1.75rem",
+                    fontWeight: "800",
+                    color: "var(--text)",
+                    marginBottom: "4px",
+                  }}
+                >
+                  Your Subjects
+                </h2>
+                <p style={{ color: "var(--text-light)" }}>
+                  Manage and organize your study materials
+                </p>
               </div>
               <button
                 onClick={() => setShowModal(true)}
                 className="btn-gradient"
-                style={{ padding: "12px 28px", display: "flex", alignItems: "center", gap: "8px", border: "none", cursor: "pointer", fontWeight: "600" }}
+                style={{
+                  padding: "12px 28px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  border: "none",
+                  cursor: "pointer",
+                  fontWeight: "600",
+                }}
               >
                 <span style={{ fontSize: "1.2rem" }}>➕</span> Add Subject
               </button>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "24px" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+                gap: "24px",
+              }}
+            >
               {subjects.map((subject) => {
                 const sid = String(subject._id);
                 const docCount = docCountBySubject[sid] ?? 0;
@@ -256,47 +368,109 @@ export default function Dashboard() {
                     onClick={() => router.push(`/documents?subjectId=${sid}`)}
                   >
                     <div style={{ marginBottom: "20px" }}>
-                      <div style={{ fontSize: "2.5rem", marginBottom: "12px" }}>📚</div>
-                      <h3 style={{ fontSize: "1.25rem", fontWeight: "700", color: "var(--text)", marginBottom: "4px" }}>
+                      <div style={{ fontSize: "2.5rem", marginBottom: "12px" }}>
+                        📚
+                      </div>
+                      <h3
+                        style={{
+                          fontSize: "1.25rem",
+                          fontWeight: "700",
+                          color: "var(--text)",
+                          marginBottom: "4px",
+                        }}
+                      >
                         {subject.name}
                       </h3>
                       {subject.code && (
-                        <p style={{ fontSize: "0.9rem", color: "var(--text-light)", fontWeight: "500" }}>
+                        <p
+                          style={{
+                            fontSize: "0.9rem",
+                            color: "var(--text-light)",
+                            fontWeight: "500",
+                          }}
+                        >
                           {subject.code}
                         </p>
                       )}
                     </div>
-                    <div style={{ borderTop: "1px solid var(--border)", paddingTop: "16px", marginBottom: "16px", display: "flex", gap: "24px", fontSize: "0.95rem", color: "var(--text-light)" }}>
+                    <div
+                      style={{
+                        borderTop: "1px solid var(--border)",
+                        paddingTop: "16px",
+                        marginBottom: "16px",
+                        display: "flex",
+                        gap: "24px",
+                        fontSize: "0.95rem",
+                        color: "var(--text-light)",
+                      }}
+                    >
                       <div>
-                        <div style={{ fontWeight: "700", color: "var(--primary)" }}>{docCount}</div>
+                        <div
+                          style={{ fontWeight: "700", color: "var(--primary)" }}
+                        >
+                          {docCount}
+                        </div>
                         <div>Document{docCount !== 1 ? "s" : ""}</div>
                       </div>
                     </div>
                     <Link
                       href={`/subjects/${sid}`}
-                      style={{ display: "inline-block", color: "var(--primary)", textDecoration: "none", fontWeight: "600", fontSize: "0.95rem" }}
+                      style={{
+                        display: "inline-block",
+                        color: "var(--primary)",
+                        textDecoration: "none",
+                        fontWeight: "600",
+                        fontSize: "0.95rem",
+                      }}
                     >
                       View by type →
                     </Link>
                   </div>
                 );
               })}
-              
+
               {subjects.length === 0 && (
-                <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "60px 40px", background: "var(--surface)", borderRadius: "12px", border: "2px dashed var(--border)" }}>
-                  <div style={{ fontSize: "3rem", marginBottom: "16px" }}>📚</div>
-                  <h3 style={{ fontWeight: "700", color: "var(--text)", marginBottom: "12px", fontSize: "1.25rem" }}>
+                <div
+                  style={{
+                    gridColumn: "1 / -1",
+                    textAlign: "center",
+                    padding: "60px 40px",
+                    background: "var(--surface)",
+                    borderRadius: "12px",
+                    border: "2px dashed var(--border)",
+                  }}
+                >
+                  <div style={{ fontSize: "3rem", marginBottom: "16px" }}>
+                    📚
+                  </div>
+                  <h3
+                    style={{
+                      fontWeight: "700",
+                      color: "var(--text)",
+                      marginBottom: "12px",
+                      fontSize: "1.25rem",
+                    }}
+                  >
                     No Subjects Yet
                   </h3>
-                  <p style={{ color: "var(--text-light)", marginBottom: "24px" }}>
-                    Create your first subject to start organizing your study materials
+                  <p
+                    style={{ color: "var(--text-light)", marginBottom: "24px" }}
+                  >
+                    Create your first subject to start organizing your study
+                    materials
                   </p>
                   <button
                     onClick={() => setShowModal(true)}
                     className="btn-gradient"
-                    style={{ padding: "12px 28px", border: "none", cursor: "pointer", fontWeight: "600" }}
+                    style={{
+                      padding: "12px 28px",
+                      border: "none",
+                      cursor: "pointer",
+                      fontWeight: "600",
+                    }}
                   >
-                    <span style={{ marginRight: "8px" }}>➕</span> Create Subject
+                    <span style={{ marginRight: "8px" }}>➕</span> Create
+                    Subject
                   </button>
                 </div>
               )}
@@ -317,7 +491,7 @@ export default function Dashboard() {
             alignItems: "center",
             justifyContent: "center",
             zIndex: "50",
-            padding: "20px"
+            padding: "20px",
           }}
           onClick={() => setShowModal(false)}
         >
@@ -329,12 +503,27 @@ export default function Dashboard() {
               maxWidth: "500px",
               width: "100%",
               padding: "32px",
-              animation: "slideUp 0.3s ease-out"
+              animation: "slideUp 0.3s ease-out",
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
-              <h3 style={{ fontSize: "1.5rem", fontWeight: "700", color: "var(--text)" }}>Add New Subject</h3>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "24px",
+              }}
+            >
+              <h3
+                style={{
+                  fontSize: "1.5rem",
+                  fontWeight: "700",
+                  color: "var(--text)",
+                }}
+              >
+                Add New Subject
+              </h3>
               <button
                 onClick={() => setShowModal(false)}
                 style={{
@@ -342,7 +531,7 @@ export default function Dashboard() {
                   border: "none",
                   fontSize: "1.5rem",
                   cursor: "pointer",
-                  color: "var(--text-light)"
+                  color: "var(--text-light)",
                 }}
               >
                 ✕
@@ -350,7 +539,15 @@ export default function Dashboard() {
             </div>
 
             <div style={{ marginBottom: "20px" }}>
-              <label style={{ display: "block", fontWeight: "600", color: "var(--text)", marginBottom: "8px", fontSize: "0.95rem" }}>
+              <label
+                style={{
+                  display: "block",
+                  fontWeight: "600",
+                  color: "var(--text)",
+                  marginBottom: "8px",
+                  fontSize: "0.95rem",
+                }}
+              >
                 Subject Name *
               </label>
               <input
@@ -363,18 +560,28 @@ export default function Dashboard() {
                   fontSize: "1rem",
                   fontFamily: "inherit",
                   transition: "all 0.2s",
-                  boxSizing: "border-box"
+                  boxSizing: "border-box",
                 }}
                 value={newSubject.name}
-                onChange={(e) => setNewSubject({ ...newSubject, name: e.target.value })}
+                onChange={(e) =>
+                  setNewSubject({ ...newSubject, name: e.target.value })
+                }
                 placeholder="e.g., Mathematics"
-                onFocus={(e) => e.target.style.borderColor = "var(--primary)"}
-                onBlur={(e) => e.target.style.borderColor = "var(--border)"}
+                onFocus={(e) => (e.target.style.borderColor = "var(--primary)")}
+                onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
               />
             </div>
 
             <div style={{ marginBottom: "28px" }}>
-              <label style={{ display: "block", fontWeight: "600", color: "var(--text)", marginBottom: "8px", fontSize: "0.95rem" }}>
+              <label
+                style={{
+                  display: "block",
+                  fontWeight: "600",
+                  color: "var(--text)",
+                  marginBottom: "8px",
+                  fontSize: "0.95rem",
+                }}
+              >
                 Subject Code (Optional)
               </label>
               <input
@@ -387,17 +594,25 @@ export default function Dashboard() {
                   fontSize: "1rem",
                   fontFamily: "inherit",
                   transition: "all 0.2s",
-                  boxSizing: "border-box"
+                  boxSizing: "border-box",
                 }}
                 value={newSubject.code}
-                onChange={(e) => setNewSubject({ ...newSubject, code: e.target.value })}
+                onChange={(e) =>
+                  setNewSubject({ ...newSubject, code: e.target.value })
+                }
                 placeholder="e.g., MATH101"
-                onFocus={(e) => e.target.style.borderColor = "var(--primary)"}
-                onBlur={(e) => e.target.style.borderColor = "var(--border)"}
+                onFocus={(e) => (e.target.style.borderColor = "var(--primary)")}
+                onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
               />
             </div>
 
-            <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "12px",
+              }}
+            >
               <button
                 onClick={() => setShowModal(false)}
                 style={{
@@ -408,7 +623,7 @@ export default function Dashboard() {
                   borderRadius: "8px",
                   cursor: "pointer",
                   fontWeight: "600",
-                  transition: "all 0.2s"
+                  transition: "all 0.2s",
                 }}
               >
                 Cancel
@@ -416,7 +631,12 @@ export default function Dashboard() {
               <button
                 onClick={handleAddSubject}
                 className="btn-gradient"
-                style={{ padding: "12px 24px", border: "none", cursor: "pointer", fontWeight: "600" }}
+                style={{
+                  padding: "12px 24px",
+                  border: "none",
+                  cursor: "pointer",
+                  fontWeight: "600",
+                }}
               >
                 Create Subject
               </button>
@@ -438,8 +658,11 @@ export default function Dashboard() {
             fontWeight: "600",
             boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
             animation: "slideIn 0.3s ease-out",
-            background: toast.type === "success" ? "linear-gradient(135deg, var(--success), #059669)" : "linear-gradient(135deg, var(--error), #dc2626)",
-            zIndex: "50"
+            background:
+              toast.type === "success"
+                ? "linear-gradient(135deg, var(--success), #059669)"
+                : "linear-gradient(135deg, var(--error), #dc2626)",
+            zIndex: "50",
           }}
         >
           {toast.message}
@@ -447,20 +670,64 @@ export default function Dashboard() {
       )}
 
       {/* Footer */}
-      <footer style={{ marginTop: "60px", padding: "40px 24px", borderTop: "1px solid var(--border)", background: "#f8fafc", color: "var(--text-light)", textAlign: "center" }}>
+      <footer
+        style={{
+          marginTop: "60px",
+          padding: "40px 24px",
+          borderTop: "1px solid var(--border)",
+          background: "#f8fafc",
+          color: "var(--text-light)",
+          textAlign: "center",
+        }}
+      >
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <p style={{ marginBottom: "12px", fontSize: "0.9rem" }}>© 2026 Study Assistant. All rights reserved.</p>
+          <p style={{ marginBottom: "12px", fontSize: "0.9rem" }}>
+            © 2026 Study Assistant. All rights reserved.
+          </p>
           <p style={{ fontSize: "0.85rem" }}>
-            Built with <span style={{ color: "var(--error)" }}>❤️</span> by <strong style={{ color: "var(--text)" }}>Prosun Mukherjee</strong> | MERN Stack Developer
+            Built with <span style={{ color: "var(--error)" }}>❤️</span> by{" "}
+            <strong style={{ color: "var(--text)" }}>Prosun Mukherjee</strong> |
+            MERN Stack Developer
           </p>
           <div style={{ marginTop: "12px", fontSize: "0.85rem" }}>
-            <a href="mailto:prosunsajal123@gmail.com" style={{ color: "var(--text-light)", textDecoration: "none", marginRight: "16px", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = "var(--primary)"} onMouseLeave={e => e.target.style.color = "var(--text-light)"}>
+            <a
+              href="mailto:prosunsajal123@gmail.com"
+              style={{
+                color: "var(--text-light)",
+                textDecoration: "none",
+                marginRight: "16px",
+                transition: "color 0.2s",
+              }}
+              onMouseEnter={(e) => (e.target.style.color = "var(--primary)")}
+              onMouseLeave={(e) => (e.target.style.color = "var(--text-light)")}
+            >
               📧 Email
             </a>
-            <a href="tel:+8801911572117" style={{ color: "var(--text-light)", textDecoration: "none", marginRight: "16px", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = "var(--primary)"} onMouseLeave={e => e.target.style.color = "var(--text-light)"}>
+            <a
+              href="tel:+8801911572117"
+              style={{
+                color: "var(--text-light)",
+                textDecoration: "none",
+                marginRight: "16px",
+                transition: "color 0.2s",
+              }}
+              onMouseEnter={(e) => (e.target.style.color = "var(--primary)")}
+              onMouseLeave={(e) => (e.target.style.color = "var(--text-light)")}
+            >
               📱 Contact
             </a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--text-light)", textDecoration: "none", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = "var(--primary)"} onMouseLeave={e => e.target.style.color = "var(--text-light)"}>
+            <a
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: "var(--text-light)",
+                textDecoration: "none",
+                transition: "color 0.2s",
+              }}
+              onMouseEnter={(e) => (e.target.style.color = "var(--primary)")}
+              onMouseLeave={(e) => (e.target.style.color = "var(--text-light)")}
+            >
               GitHub
             </a>
           </div>

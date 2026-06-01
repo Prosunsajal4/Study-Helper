@@ -265,6 +265,48 @@ body {
   transform: none;
 }
 
+/* Button Sizes */
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+.btn-lg {
+  padding: 16px 32px;
+  font-size: 16px;
+}
+
+.btn-xl {
+  padding: 20px 40px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Button Variants */
+.btn-outlined {
+  background: transparent;
+  border: 2px solid currentColor;
+}
+
+.btn-outlined.btn-primary {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-outlined.btn-primary:hover {
+  background: rgba(37, 99, 235, 0.05);
+}
+
+.btn-text {
+  background: transparent;
+  box-shadow: none;
+  color: var(--primary);
+}
+
+.btn-text:hover {
+  background: rgba(37, 99, 235, 0.05);
+}
+
 /* Forms */
 .form-group {
   margin-bottom: 24px;
